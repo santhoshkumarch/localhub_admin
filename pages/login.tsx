@@ -17,8 +17,8 @@ export default function LoginPage() {
     const mockUser = {
       id: 1,
       email: email,
-      name: 'Demo User',
-      role: 'admin'
+      name: 'Santhosh Kumar',
+      role: 'Superadmin'
     };
     
     const fakeToken = 'FAKE_JWT_TOKEN_FOR_LOCAL_DEV';
