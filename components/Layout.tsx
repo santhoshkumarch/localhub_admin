@@ -1,14 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { getUser, User } from '../lib/auth';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
 
+  useEffect(() => {
+    setUser(getUser());
+  }, []);
+
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('user_data');
     router.push('/login');
   };
 
@@ -57,11 +64,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               className="flex items-center space-x-2 lg:space-x-3 p-2 rounded-lg hover:bg-gray-100 hover:shadow-md transition-all duration-300 transform hover:scale-105 active:scale-95"
             >
               <div className="w-8 h-8 bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center">
-                <span className="text-white font-medium text-sm">SK</span>
+                <span className="text-white font-medium text-sm">
+                  {user?.name?.split(' ').map(n => n[0]).join('').toUpperCase() || 'U'}
+                </span>
               </div>
               <div className="text-left hidden sm:block">
-                <p className="text-sm font-medium text-gray-900">Santhosh Kumar</p>
-                <p className="text-xs text-gray-500">Super Admin</p>
+                <p className="text-sm font-medium text-gray-900">{user?.name || 'Loading...'}</p>
+                <p className="text-xs text-gray-500 capitalize">{user?.role || 'User'}</p>
               </div>
               <svg className="w-4 h-4 text-gray-400 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />

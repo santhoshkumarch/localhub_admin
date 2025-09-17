@@ -1,22 +1,29 @@
 import React, { useState } from 'react';
 import Router from 'next/router';
-import { saveToken } from '../lib/auth';
+import { saveToken, saveUser } from '../lib/auth';
+import { loginUser } from '../lib/api';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setIsLoading(true);
+    setError('');
     
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    const fakeToken = 'FAKE_JWT_TOKEN_FOR_LOCAL_DEV';
-    saveToken(fakeToken);
-    Router.push('/dashboard');
+    try {
+      const response = await loginUser(email, password);
+      saveToken(response.token);
+      saveUser(response.user);
+      Router.push('/dashboard');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Login failed');
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -78,10 +85,21 @@ export default function LoginPage() {
             </button>
           </form>
 
+          {error && (
+            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-sm text-red-600">{error}</p>
+            </div>
+          )}
+
           <div className="mt-6 text-center">
-            <p className="text-sm text-gray-500">
-              Demo credentials: any email/password combination
+            <p className="text-sm text-gray-500 mb-2">
+              Test credentials:
             </p>
+            <div className="text-xs text-gray-400 space-y-1">
+              <p>Superadmin: superadmin@localhub.com / password</p>
+              <p>Admin: admin@localhub.com / password</p>
+              <p>Viewer: viewer@localhub.com / password</p>
+            </div>
           </div>
         </div>
       </div>
