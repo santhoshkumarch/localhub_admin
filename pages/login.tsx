@@ -1,29 +1,31 @@
 import React, { useState } from 'react';
 import Router from 'next/router';
 import { saveToken, saveUser } from '../lib/auth';
-import { loginUser } from '../lib/api';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setIsLoading(true);
-    setError('');
     
-    try {
-      const response = await loginUser(email, password);
-      saveToken(response.token);
-      saveUser(response.user);
-      Router.push('/dashboard');
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Login failed');
-    } finally {
-      setIsLoading(false);
-    }
+    // Mock authentication - accept any email/password
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    const mockUser = {
+      id: 1,
+      email: email,
+      name: 'Demo User',
+      role: 'admin'
+    };
+    
+    const fakeToken = 'FAKE_JWT_TOKEN_FOR_LOCAL_DEV';
+    saveToken(fakeToken);
+    saveUser(mockUser);
+    Router.push('/dashboard');
+    setIsLoading(false);
   }
 
   return (
@@ -85,21 +87,10 @@ export default function LoginPage() {
             </button>
           </form>
 
-          {error && (
-            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-sm text-red-600">{error}</p>
-            </div>
-          )}
-
           <div className="mt-6 text-center">
-            <p className="text-sm text-gray-500 mb-2">
-              Test credentials:
+            <p className="text-sm text-gray-500">
+              Demo mode: Use any email/password to login
             </p>
-            <div className="text-xs text-gray-400 space-y-1">
-              <p>Superadmin: superadmin@localhub.com / password</p>
-              <p>Admin: admin@localhub.com / password</p>
-              <p>Viewer: viewer@localhub.com / password</p>
-            </div>
           </div>
         </div>
       </div>
