@@ -50,7 +50,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </div>
               <div className="hidden sm:block">
                 <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                  LocalHub
+                  My Group
                 </h1>
                 <p className="text-xs text-gray-500 font-medium tracking-wide">ADMIN PANEL</p>
               </div>
@@ -117,7 +117,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border border-white animate-pulse"></div>
                 </div>
                 <div>
-                  <span className="text-lg font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">LocalHub</span>
+                  <span className="text-lg font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">My Group</span>
                   <p className="text-xs text-gray-500 font-medium">ADMIN PANEL</p>
                 </div>
               </div>
