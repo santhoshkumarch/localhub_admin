@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '../components/Layout';
 
-interface Hashtag {
+interface Label {
   id: number;
   name: string;
   color: string;
@@ -9,14 +9,14 @@ interface Hashtag {
   usageCount: number;
 }
 
-export default function HashtagsPage() {
-  const [hashtags, setHashtags] = useState<Hashtag[]>([
+export default function LabelsPage() {
+  const [labels, setLabels] = useState<Label[]>([
     { id: 1, name: 'business', color: 'blue', createdAt: '2024-01-15', usageCount: 45 },
     { id: 2, name: 'food', color: 'green', createdAt: '2024-01-14', usageCount: 32 },
     { id: 3, name: 'shopping', color: 'purple', createdAt: '2024-01-13', usageCount: 28 },
   ]);
   
-  const [newHashtag, setNewHashtag] = useState('');
+  const [newLabel, setNewLabel] = useState('');
   const [selectedColor, setSelectedColor] = useState('blue');
   const [isCreating, setIsCreating] = useState(false);
 
@@ -31,26 +31,26 @@ export default function HashtagsPage() {
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newHashtag.trim()) return;
+    if (!newLabel.trim()) return;
 
     setIsCreating(true);
     await new Promise(resolve => setTimeout(resolve, 500));
 
-    const newTag: Hashtag = {
+    const newTag: Label = {
       id: Date.now(),
-      name: newHashtag.toLowerCase().replace(/[^a-z0-9]/g, ''),
+      name: newLabel.toLowerCase().replace(/[^a-z0-9]/g, ''),
       color: selectedColor,
       createdAt: new Date().toISOString().split('T')[0],
       usageCount: 0,
     };
 
-    setHashtags([newTag, ...hashtags]);
-    setNewHashtag('');
+    setLabels([newTag, ...labels]);
+    setNewLabel('');
     setIsCreating(false);
   };
 
   const handleDelete = (id: number) => {
-    setHashtags(hashtags.filter(tag => tag.id !== id));
+    setLabels(labels.filter(tag => tag.id !== id));
   };
 
   const getColorClass = (color: string) => {
@@ -61,29 +61,25 @@ export default function HashtagsPage() {
     <Layout>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Hashtags & Labels</h1>
-          <p className="text-sm sm:text-base text-gray-600">Create and manage hashtags for posts and businesses</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Labels</h1>
+          <p className="text-sm sm:text-base text-gray-600">Create and manage labels for posts and businesses</p>
         </div>
 
-        {/* Create New Hashtag */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6 mb-6 sm:mb-8">
-          <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4">Create New Hashtag</h2>
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4">Create New Label</h2>
           
           <form onSubmit={handleCreate} className="space-y-4">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Hashtag Name</label>
-                <div className="relative">
-                  <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium">#</span>
-                  <input
-                    type="text"
-                    value={newHashtag}
-                    onChange={(e) => setNewHashtag(e.target.value)}
-                    className="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                    placeholder="business, food, shopping..."
-                    required
-                  />
-                </div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Label Name</label>
+                <input
+                  type="text"
+                  value={newLabel}
+                  onChange={(e) => setNewLabel(e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                  placeholder="business, food, shopping..."
+                  required
+                />
               </div>
 
               <div>
@@ -106,7 +102,7 @@ export default function HashtagsPage() {
             <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-4">
               <button
                 type="submit"
-                disabled={isCreating || !newHashtag.trim()}
+                disabled={isCreating || !newLabel.trim()}
                 className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 sm:px-6 py-3 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 focus:ring-4 focus:ring-blue-200 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
               >
                 {isCreating ? (
@@ -122,17 +118,17 @@ export default function HashtagsPage() {
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                     </svg>
-                    <span className="hidden sm:inline">Create Hashtag</span>
+                    <span className="hidden sm:inline">Create Label</span>
                     <span className="sm:hidden">Create</span>
                   </>
                 )}
               </button>
 
-              {newHashtag && (
+              {newLabel && (
                 <div className="flex items-center space-x-2 w-full sm:w-auto">
                   <span className="text-sm text-gray-500">Preview:</span>
                   <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getColorClass(selectedColor)}`}>
-                    #{newHashtag.toLowerCase().replace(/[^a-z0-9]/g, '')}
+                    {newLabel.toLowerCase().replace(/[^a-z0-9]/g, '')}
                   </span>
                 </div>
               )}
@@ -140,11 +136,10 @@ export default function HashtagsPage() {
           </form>
         </div>
 
-        {/* Hashtags List */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200">
           <div className="p-4 sm:p-6 border-b border-gray-200">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between space-y-2 sm:space-y-0">
-              <h2 className="text-lg sm:text-xl font-semibold text-gray-900">All Hashtags ({hashtags.length})</h2>
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-900">All Labels ({labels.length})</h2>
               <div className="flex items-center space-x-2 text-xs sm:text-sm text-gray-500">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
@@ -155,24 +150,24 @@ export default function HashtagsPage() {
           </div>
 
           <div className="p-4 sm:p-6">
-            {hashtags.length === 0 ? (
+            {labels.length === 0 ? (
               <div className="text-center py-12">
                 <svg className="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
                 </svg>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">No hashtags yet</h3>
-                <p className="text-gray-500">Create your first hashtag to get started</p>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">No labels yet</h3>
+                <p className="text-gray-500">Create your first label to get started</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {hashtags.map((hashtag) => (
-                  <div key={hashtag.id} className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors duration-200">
+                {labels.map((label) => (
+                  <div key={label.id} className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors duration-200">
                     <div className="flex items-center justify-between mb-3">
-                      <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getColorClass(hashtag.color)}`}>
-                        #{hashtag.name}
+                      <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getColorClass(label.color)}`}>
+                        {label.name}
                       </span>
                       <button
-                        onClick={() => handleDelete(hashtag.id)}
+                        onClick={() => handleDelete(label.id)}
                         className="text-gray-400 hover:text-red-500 transition-colors duration-200"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -184,11 +179,11 @@ export default function HashtagsPage() {
                     <div className="space-y-2 text-sm text-gray-600">
                       <div className="flex items-center justify-between">
                         <span>Usage Count:</span>
-                        <span className="font-medium">{hashtag.usageCount}</span>
+                        <span className="font-medium">{label.usageCount}</span>
                       </div>
                       <div className="flex items-center justify-between">
                         <span>Created:</span>
-                        <span className="font-medium">{hashtag.createdAt}</span>
+                        <span className="font-medium">{label.createdAt}</span>
                       </div>
                     </div>
                   </div>

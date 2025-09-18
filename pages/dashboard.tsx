@@ -3,12 +3,12 @@ import Layout from '../components/Layout';
 
 export default function DashboardPage() {
   const stats = {
-    totalUsers: 287500,
-    activeUsers: 45200,
-    totalBusinesses: 8450,
-    totalPosts: 12300,
+    totalUsers: 18,
+    activeUsers: 12,
+    totalBusinesses: 7,
+    totalPosts: 15,
     revenue: 125000,
-    pendingApprovals: 23
+    pendingApprovals: 3
   };
 
   const recentActivities = [
@@ -20,10 +20,10 @@ export default function DashboardPage() {
   ];
 
   const topDistricts = [
-    { name: 'Chennai', businesses: 1250, users: 45000, growth: '+12%' },
-    { name: 'Coimbatore', businesses: 890, users: 32000, growth: '+8%' },
-    { name: 'Madurai', businesses: 650, users: 28000, growth: '+15%' },
-    { name: 'Salem', businesses: 380, users: 16200, growth: '+6%' },
+    { name: 'Chennai', businesses: 3, users: 8, growth: '+12%' },
+    { name: 'Coimbatore', businesses: 2, users: 5, growth: '+8%' },
+    { name: 'Madurai', businesses: 1, users: 3, growth: '+15%' },
+    { name: 'Salem', businesses: 1, users: 2, growth: '+6%' },
   ];
 
   return (
