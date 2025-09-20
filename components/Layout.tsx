@@ -178,7 +178,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   <span className={`transition-all duration-300 ${isSidebarOpen ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2 lg:hidden'}`}>Posts</span>
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link href="/districts" className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:translate-x-1 ${isActive('/districts') ? 'bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 border-r-4 border-blue-600 shadow-md' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:shadow-sm'}`}>
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -186,7 +186,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   </svg>
                   <span className={`transition-all duration-300 ${isSidebarOpen ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2 lg:hidden'}`}>Districts</span>
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link href="/hashtags" className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:translate-x-1 ${isActive('/hashtags') ? 'bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 border-r-4 border-blue-600 shadow-md' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:shadow-sm'}`}>
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

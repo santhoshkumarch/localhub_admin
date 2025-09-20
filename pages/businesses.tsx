@@ -9,7 +9,7 @@ interface Business {
   phone: string;
   email: string;
   address: string;
-  district: string;
+  // string;
   description: string;
   rating: number;
   reviewCount: number;
@@ -26,46 +26,43 @@ interface Business {
 
 export default function BusinessesPage() {
   const [businesses, setBusinesses] = useState<Business[]>([
-    { id: 1, name: 'Kumar Electronics', category: 'Electronics', owner: 'Rajesh Kumar', phone: '+91 98765 43210', email: 'kumar.electronics@gmail.com', address: 'T. Nagar, Chennai', district: 'Chennai', description: 'Complete electronics store with latest gadgets and appliances', rating: 4.5, reviewCount: 23, status: 'active', isVerified: true, registeredDate: '2024-01-15', lastUpdated: '2024-01-20', website: 'www.kumarelectronics.com' },
-    { id: 2, name: 'Priya Textiles', category: 'Textiles', owner: 'Priya Selvam', phone: '+91 87654 32109', email: 'priya.textiles@yahoo.com', address: 'RS Puram, Coimbatore', district: 'Coimbatore', description: 'Premium quality fabrics and traditional wear', rating: 4.7, reviewCount: 35, status: 'active', isVerified: true, registeredDate: '2024-01-12', lastUpdated: '2024-01-18', socialMedia: { facebook: 'priyatextiles', instagram: 'priya_textiles' } },
-    { id: 3, name: 'Muthu Restaurant', category: 'Restaurant', owner: 'Muthu Raman', phone: '+91 76543 21098', email: 'muthu.restaurant@gmail.com', address: 'Meenakshi Amman Temple St, Madurai', district: 'Madurai', description: 'Authentic South Indian cuisine and traditional recipes', rating: 4.3, reviewCount: 67, status: 'active', isVerified: false, registeredDate: '2024-01-10', lastUpdated: '2024-01-16' },
-    { id: 4, name: 'Anitha Saree Center', category: 'Textiles', owner: 'Anitha Devi', phone: '+91 65432 10987', email: 'anitha.sarees@hotmail.com', address: 'Main Bazaar, Salem', district: 'Salem', description: 'Exclusive collection of silk sarees and ethnic wear', rating: 3.8, reviewCount: 12, status: 'suspended', isVerified: true, registeredDate: '2024-01-08', lastUpdated: '2024-01-14' },
-    { id: 5, name: 'Tech Solutions', category: 'IT Services', owner: 'Kumar Krishnan', phone: '+91 54321 09876', email: 'tech.solutions@gmail.com', address: 'Anna Salai, Tiruchirappalli', district: 'Tiruchirappalli', description: 'Computer repair and IT support services', rating: 4.1, reviewCount: 8, status: 'pending', isVerified: false, registeredDate: '2024-01-05', lastUpdated: '2024-01-12' },
-    { id: 6, name: 'Lakshmi General Store', category: 'Grocery', owner: 'Lakshmi Narayanan', phone: '+91 43210 98765', email: 'lakshmi.store@gmail.com', address: 'Gandhi Road, Vellore', district: 'Vellore', description: 'Daily essentials and grocery items', rating: 4.1, reviewCount: 28, status: 'active', isVerified: true, registeredDate: '2024-01-03', lastUpdated: '2024-01-19' },
-    { id: 7, name: 'Ravi Auto Works', category: 'Auto Repair', owner: 'Ravi Chandran', phone: '+91 32109 87654', email: 'ravi.auto@yahoo.com', address: 'Perundurai Road, Erode', district: 'Erode', description: 'Complete automobile repair and maintenance services', rating: 4.4, reviewCount: 19, status: 'active', isVerified: true, registeredDate: '2023-12-28', lastUpdated: '2024-01-17' },
-    { id: 8, name: 'Meera Fashion Boutique', category: 'Fashion', owner: 'Meera Balan', phone: '+91 21098 76543', email: 'meera.fashion@gmail.com', address: 'Big Temple Street, Thanjavur', district: 'Thanjavur', description: 'Designer clothing and fashion accessories', rating: 4.6, reviewCount: 41, status: 'pending', isVerified: false, registeredDate: '2023-12-25', lastUpdated: '2024-01-15' },
-    { id: 9, name: 'Suresh Electronics', category: 'Electronics', owner: 'Suresh Babu', phone: '+91 10987 65432', email: 'suresh.electronics@hotmail.com', address: 'Palani Road, Dindigul', district: 'Dindigul', description: 'Home appliances and electronic gadgets', rating: 3.9, reviewCount: 15, status: 'active', isVerified: true, registeredDate: '2023-12-20', lastUpdated: '2024-01-13' },
-    { id: 10, name: 'Divya Beauty Parlour', category: 'Beauty & Wellness', owner: 'Divya Priya', phone: '+91 09876 54321', email: 'divya.beauty@gmail.com', address: 'Old Town, Cuddalore', district: 'Cuddalore', description: 'Professional beauty and wellness services', rating: 4.8, reviewCount: 52, status: 'active', isVerified: true, registeredDate: '2023-12-18', lastUpdated: '2024-01-16' },
-    { id: 11, name: 'Arjun Pharmacy', category: 'Healthcare', owner: 'Arjun Krishnan', phone: '+91 98123 45678', email: 'arjun.pharmacy@gmail.com', address: 'Hospital Road, Chennai', district: 'Chennai', description: 'Complete medical store with prescription medicines', rating: 4.2, reviewCount: 34, status: 'active', isVerified: true, registeredDate: '2023-12-15', lastUpdated: '2024-01-14' },
-    { id: 12, name: 'Siva Sweets', category: 'Restaurant', owner: 'Sivakumar', phone: '+91 87123 45679', email: 'siva.sweets@yahoo.com', address: 'Gandhi Market, Coimbatore', district: 'Coimbatore', description: 'Traditional sweets and South Indian snacks', rating: 4.5, reviewCount: 89, status: 'active', isVerified: true, registeredDate: '2023-12-12', lastUpdated: '2024-01-18' },
-    { id: 13, name: 'Karthik Mobile Center', category: 'Electronics', owner: 'Karthik Raja', phone: '+91 76123 45680', email: 'karthik.mobile@gmail.com', address: 'Anna Nagar, Madurai', district: 'Madurai', description: 'Mobile phones, accessories and repair services', rating: 4.0, reviewCount: 27, status: 'pending', isVerified: false, registeredDate: '2023-12-10', lastUpdated: '2024-01-12' },
-    { id: 14, name: 'Vasantha Textiles', category: 'Textiles', owner: 'Vasantha Kumari', phone: '+91 65123 45681', email: 'vasantha.textiles@hotmail.com', address: 'Textile Market, Salem', district: 'Salem', description: 'Wholesale and retail textile business', rating: 4.3, reviewCount: 18, status: 'active', isVerified: true, registeredDate: '2023-12-08', lastUpdated: '2024-01-11' },
-    { id: 15, name: 'Ganesan Hardware', category: 'Hardware', owner: 'Ganesan Murugan', phone: '+91 54123 45682', email: 'ganesan.hardware@gmail.com', address: 'Main Road, Tiruchirappalli', district: 'Tiruchirappalli', description: 'Construction materials and hardware supplies', rating: 3.7, reviewCount: 22, status: 'active', isVerified: false, registeredDate: '2023-12-05', lastUpdated: '2024-01-10' },
-    { id: 16, name: 'Prema Bakery', category: 'Restaurant', owner: 'Prema Devi', phone: '+91 43123 45683', email: 'prema.bakery@yahoo.com', address: 'Fort Road, Vellore', district: 'Vellore', description: 'Fresh bakery items and birthday cakes', rating: 4.4, reviewCount: 63, status: 'active', isVerified: true, registeredDate: '2023-12-03', lastUpdated: '2024-01-09' },
-    { id: 17, name: 'Senthil Cycle Shop', category: 'Auto Repair', owner: 'Senthil Kumar', phone: '+91 32123 45684', email: 'senthil.cycles@gmail.com', address: 'Bus Stand Road, Erode', district: 'Erode', description: 'Bicycle sales and repair services', rating: 4.1, reviewCount: 16, status: 'suspended', isVerified: true, registeredDate: '2023-12-01', lastUpdated: '2024-01-08' },
-    { id: 18, name: 'Kamala Jewellery', category: 'Jewellery', owner: 'Kamala Devi', phone: '+91 21123 45685', email: 'kamala.jewellery@hotmail.com', address: 'South Main Street, Thanjavur', district: 'Thanjavur', description: 'Gold and silver jewellery with traditional designs', rating: 4.7, reviewCount: 45, status: 'active', isVerified: true, registeredDate: '2023-11-28', lastUpdated: '2024-01-07' },
-    { id: 19, name: 'Murugan Provision Store', category: 'Grocery', owner: 'Murugan Selvam', phone: '+91 10123 45686', email: 'murugan.provision@gmail.com', address: 'Market Street, Dindigul', district: 'Dindigul', description: 'Daily provisions and household items', rating: 3.8, reviewCount: 31, status: 'active', isVerified: false, registeredDate: '2023-11-25', lastUpdated: '2024-01-06' },
-    { id: 20, name: 'Radha Clinic', category: 'Healthcare', owner: 'Dr. Radha Krishnan', phone: '+91 09123 45687', email: 'radha.clinic@yahoo.com', address: 'Hospital Street, Cuddalore', district: 'Cuddalore', description: 'General medicine and family healthcare', rating: 4.6, reviewCount: 78, status: 'active', isVerified: true, registeredDate: '2023-11-22', lastUpdated: '2024-01-05' },
-    { id: 21, name: 'Bala Furniture', category: 'Furniture', owner: 'Balamurugan', phone: '+91 98234 56789', email: 'bala.furniture@gmail.com', address: 'Furniture Street, Chennai', district: 'Chennai', description: 'Custom furniture and home decor items', rating: 4.2, reviewCount: 29, status: 'pending', isVerified: false, registeredDate: '2023-11-20', lastUpdated: '2024-01-04' },
-    { id: 22, name: 'Selvi Tailoring', category: 'Fashion', owner: 'Selvi Raman', phone: '+91 87234 56790', email: 'selvi.tailoring@hotmail.com', address: 'Women Street, Coimbatore', district: 'Coimbatore', description: 'Ladies tailoring and alteration services', rating: 4.3, reviewCount: 37, status: 'active', isVerified: true, registeredDate: '2023-11-18', lastUpdated: '2024-01-03' },
-    { id: 23, name: 'Vinod Stationery', category: 'Stationery', owner: 'Vinod Kumar', phone: '+91 76234 56791', email: 'vinod.stationery@gmail.com', address: 'School Street, Madurai', district: 'Madurai', description: 'Books, stationery and office supplies', rating: 3.9, reviewCount: 24, status: 'active', isVerified: false, registeredDate: '2023-11-15', lastUpdated: '2024-01-02' },
-    { id: 24, name: 'Deepa Flower Shop', category: 'Flowers', owner: 'Deepa Lakshmi', phone: '+91 65234 56792', email: 'deepa.flowers@yahoo.com', address: 'Temple Street, Salem', district: 'Salem', description: 'Fresh flowers for all occasions and events', rating: 4.5, reviewCount: 42, status: 'active', isVerified: true, registeredDate: '2023-11-12', lastUpdated: '2024-01-01' },
-    { id: 25, name: 'Raman Photo Studio', category: 'Photography', owner: 'Raman Pillai', phone: '+91 54234 56793', email: 'raman.photo@gmail.com', address: 'Market Road, Tiruchirappalli', district: 'Tiruchirappalli', description: 'Professional photography and video services', rating: 4.4, reviewCount: 33, status: 'active', isVerified: true, registeredDate: '2023-11-10', lastUpdated: '2023-12-30' },
-    { id: 26, name: 'Indira Catering', category: 'Restaurant', owner: 'Indira Devi', phone: '+91 43234 56794', email: 'indira.catering@hotmail.com', address: 'Gandhi Road, Vellore', district: 'Vellore', description: 'Professional catering services for all events', rating: 4.6, reviewCount: 56, status: 'suspended', isVerified: true, registeredDate: '2023-11-08', lastUpdated: '2023-12-28' },
-    { id: 27, name: 'Gopal Book Store', category: 'Stationery', owner: 'Gopal Krishnan', phone: '+91 32234 56795', email: 'gopal.books@gmail.com', address: 'College Road, Erode', district: 'Erode', description: 'Educational books and competitive exam materials', rating: 4.1, reviewCount: 19, status: 'active', isVerified: false, registeredDate: '2023-11-05', lastUpdated: '2023-12-26' },
-    { id: 28, name: 'Shanti Dental Clinic', category: 'Healthcare', owner: 'Dr. Shanti Priya', phone: '+91 21234 56796', email: 'shanti.dental@yahoo.com', address: 'Medical Street, Thanjavur', district: 'Thanjavur', description: 'Complete dental care and oral health services', rating: 4.8, reviewCount: 67, status: 'active', isVerified: true, registeredDate: '2023-11-03', lastUpdated: '2023-12-24' },
-    { id: 29, name: 'Krishnan Spices', category: 'Grocery', owner: 'Krishnan Raju', phone: '+91 10234 56797', email: 'krishnan.spices@gmail.com', address: 'Spice Market, Dindigul', district: 'Dindigul', description: 'Wholesale spices and traditional masala powders', rating: 4.3, reviewCount: 38, status: 'pending', isVerified: false, registeredDate: '2023-11-01', lastUpdated: '2023-12-22' },
-    { id: 30, name: 'Malathi Beauty Salon', category: 'Beauty & Wellness', owner: 'Malathi Sundaram', phone: '+91 09234 56798', email: 'malathi.salon@hotmail.com', address: 'Women Complex, Cuddalore', district: 'Cuddalore', description: 'Complete beauty treatments and bridal makeup', rating: 4.7, reviewCount: 49, status: 'active', isVerified: true, registeredDate: '2023-10-28', lastUpdated: '2023-12-20' },
+    { id: 4, name: 'Anitha Saree Center', category: 'Textiles', owner: 'Anitha Devi', phone: '+91 65432 10987', email: 'anitha.sarees@hotmail.com', address: 'Main Bazaar, Salem', description: 'Exclusive collection of silk sarees and ethnic wear', rating: 3.8, reviewCount: 12, status: 'suspended', isVerified: true, registeredDate: '2024-01-08', lastUpdated: '2024-01-14' },
+    { id: 5, name: 'Tech Solutions', category: 'IT Services', owner: 'Kumar Krishnan', phone: '+91 54321 09876', email: 'tech.solutions@gmail.com', address: 'Anna Salai, Tiruchirappalli', description: 'Computer repair and IT support services', rating: 4.1, reviewCount: 8, status: 'pending', isVerified: false, registeredDate: '2024-01-05', lastUpdated: '2024-01-12' },
+    { id: 6, name: 'Lakshmi General Store', category: 'Grocery', owner: 'Lakshmi Narayanan', phone: '+91 43210 98765', email: 'lakshmi.store@gmail.com', address: 'Gandhi Road, Vellore', description: 'Daily essentials and grocery items', rating: 4.1, reviewCount: 28, status: 'active', isVerified: true, registeredDate: '2024-01-03', lastUpdated: '2024-01-19' },
+    { id: 7, name: 'Ravi Auto Works', category: 'Auto Repair', owner: 'Ravi Chandran', phone: '+91 32109 87654', email: 'ravi.auto@yahoo.com', address: 'Perundurai Road, Erode', description: 'Complete automobile repair and maintenance services', rating: 4.4, reviewCount: 19, status: 'active', isVerified: true, registeredDate: '2023-12-28', lastUpdated: '2024-01-17' },
+    { id: 8, name: 'Meera Fashion Boutique', category: 'Fashion', owner: 'Meera Balan', phone: '+91 21098 76543', email: 'meera.fashion@gmail.com', address: 'Big Temple Street, Thanjavur', description: 'Designer clothing and fashion accessories', rating: 4.6, reviewCount: 41, status: 'pending', isVerified: false, registeredDate: '2023-12-25', lastUpdated: '2024-01-15' },
+    { id: 9, name: 'Suresh Electronics', category: 'Electronics', owner: 'Suresh Babu', phone: '+91 10987 65432', email: 'suresh.electronics@hotmail.com', address: 'Palani Road, Dindigul', description: 'Home appliances and electronic gadgets', rating: 3.9, reviewCount: 15, status: 'active', isVerified: true, registeredDate: '2023-12-20', lastUpdated: '2024-01-13' },
+    { id: 10, name: 'Divya Beauty Parlour', category: 'Beauty & Wellness', owner: 'Divya Priya', phone: '+91 09876 54321', email: 'divya.beauty@gmail.com', address: 'Old Town, Cuddalore', description: 'Professional beauty and wellness services', rating: 4.8, reviewCount: 52, status: 'active', isVerified: true, registeredDate: '2023-12-18', lastUpdated: '2024-01-16' },
+    { id: 11, name: 'Arjun Pharmacy', category: 'Healthcare', owner: 'Arjun Krishnan', phone: '+91 98123 45678', email: 'arjun.pharmacy@gmail.com', address: 'Hospital Road, Chennai', description: 'Complete medical store with prescription medicines', rating: 4.2, reviewCount: 34, status: 'active', isVerified: true, registeredDate: '2023-12-15', lastUpdated: '2024-01-14' },
+    { id: 12, name: 'Siva Sweets', category: 'Restaurant', owner: 'Sivakumar', phone: '+91 87123 45679', email: 'siva.sweets@yahoo.com', address: 'Gandhi Market, Coimbatore', description: 'Traditional sweets and South Indian snacks', rating: 4.5, reviewCount: 89, status: 'active', isVerified: true, registeredDate: '2023-12-12', lastUpdated: '2024-01-18' },
+    { id: 13, name: 'Karthik Mobile Center', category: 'Electronics', owner: 'Karthik Raja', phone: '+91 76123 45680', email: 'karthik.mobile@gmail.com', address: 'Anna Nagar, Madurai', description: 'Mobile phones, accessories and repair services', rating: 4.0, reviewCount: 27, status: 'pending', isVerified: false, registeredDate: '2023-12-10', lastUpdated: '2024-01-12' },
+    { id: 14, name: 'Vasantha Textiles', category: 'Textiles', owner: 'Vasantha Kumari', phone: '+91 65123 45681', email: 'vasantha.textiles@hotmail.com', address: 'Textile Market, Salem', description: 'Wholesale and retail textile business', rating: 4.3, reviewCount: 18, status: 'active', isVerified: true, registeredDate: '2023-12-08', lastUpdated: '2024-01-11' },
+    { id: 15, name: 'Ganesan Hardware', category: 'Hardware', owner: 'Ganesan Murugan', phone: '+91 54123 45682', email: 'ganesan.hardware@gmail.com', address: 'Main Road, Tiruchirappalli', description: 'Construction materials and hardware supplies', rating: 3.7, reviewCount: 22, status: 'active', isVerified: false, registeredDate: '2023-12-05', lastUpdated: '2024-01-10' },
+    { id: 16, name: 'Prema Bakery', category: 'Restaurant', owner: 'Prema Devi', phone: '+91 43123 45683', email: 'prema.bakery@yahoo.com', address: 'Fort Road, Vellore', description: 'Fresh bakery items and birthday cakes', rating: 4.4, reviewCount: 63, status: 'active', isVerified: true, registeredDate: '2023-12-03', lastUpdated: '2024-01-09' },
+    { id: 17, name: 'Senthil Cycle Shop', category: 'Auto Repair', owner: 'Senthil Kumar', phone: '+91 32123 45684', email: 'senthil.cycles@gmail.com', address: 'Bus Stand Road, Erode', description: 'Bicycle sales and repair services', rating: 4.1, reviewCount: 16, status: 'suspended', isVerified: true, registeredDate: '2023-12-01', lastUpdated: '2024-01-08' },
+    { id: 18, name: 'Kamala Jewellery', category: 'Jewellery', owner: 'Kamala Devi', phone: '+91 21123 45685', email: 'kamala.jewellery@hotmail.com', address: 'South Main Street, Thanjavur', description: 'Gold and silver jewellery with traditional designs', rating: 4.7, reviewCount: 45, status: 'active', isVerified: true, registeredDate: '2023-11-28', lastUpdated: '2024-01-07' },
+    { id: 19, name: 'Murugan Provision Store', category: 'Grocery', owner: 'Murugan Selvam', phone: '+91 10123 45686', email: 'murugan.provision@gmail.com', address: 'Market Street, Dindigul', description: 'Daily provisions and household items', rating: 3.8, reviewCount: 31, status: 'active', isVerified: false, registeredDate: '2023-11-25', lastUpdated: '2024-01-06' },
+    { id: 20, name: 'Radha Clinic', category: 'Healthcare', owner: 'Dr. Radha Krishnan', phone: '+91 09123 45687', email: 'radha.clinic@yahoo.com', address: 'Hospital Street, Cuddalore', description: 'General medicine and family healthcare', rating: 4.6, reviewCount: 78, status: 'active', isVerified: true, registeredDate: '2023-11-22', lastUpdated: '2024-01-05' },
+    { id: 21, name: 'Bala Furniture', category: 'Furniture', owner: 'Balamurugan', phone: '+91 98234 56789', email: 'bala.furniture@gmail.com', address: 'Furniture Street, Chennai', description: 'Custom furniture and home decor items', rating: 4.2, reviewCount: 29, status: 'pending', isVerified: false, registeredDate: '2023-11-20', lastUpdated: '2024-01-04' },
+    { id: 22, name: 'Selvi Tailoring', category: 'Fashion', owner: 'Selvi Raman', phone: '+91 87234 56790', email: 'selvi.tailoring@hotmail.com', address: 'Women Street, Coimbatore', description: 'Ladies tailoring and alteration services', rating: 4.3, reviewCount: 37, status: 'active', isVerified: true, registeredDate: '2023-11-18', lastUpdated: '2024-01-03' },
+    { id: 23, name: 'Vinod Stationery', category: 'Stationery', owner: 'Vinod Kumar', phone: '+91 76234 56791', email: 'vinod.stationery@gmail.com', address: 'School Street, Madurai', description: 'Books, stationery and office supplies', rating: 3.9, reviewCount: 24, status: 'active', isVerified: false, registeredDate: '2023-11-15', lastUpdated: '2024-01-02' },
+    { id: 24, name: 'Deepa Flower Shop', category: 'Flowers', owner: 'Deepa Lakshmi', phone: '+91 65234 56792', email: 'deepa.flowers@yahoo.com', address: 'Temple Street, Salem', description: 'Fresh flowers for all occasions and events', rating: 4.5, reviewCount: 42, status: 'active', isVerified: true, registeredDate: '2023-11-12', lastUpdated: '2024-01-01' },
+    { id: 25, name: 'Raman Photo Studio', category: 'Photography', owner: 'Raman Pillai', phone: '+91 54234 56793', email: 'raman.photo@gmail.com', address: 'Market Road, Tiruchirappalli', description: 'Professional photography and video services', rating: 4.4, reviewCount: 33, status: 'active', isVerified: true, registeredDate: '2023-11-10', lastUpdated: '2023-12-30' },
+    { id: 26, name: 'Indira Catering', category: 'Restaurant', owner: 'Indira Devi', phone: '+91 43234 56794', email: 'indira.catering@hotmail.com', address: 'Gandhi Road, Vellore', description: 'Professional catering services for all events', rating: 4.6, reviewCount: 56, status: 'suspended', isVerified: true, registeredDate: '2023-11-08', lastUpdated: '2023-12-28' },
+    { id: 27, name: 'Gopal Book Store', category: 'Stationery', owner: 'Gopal Krishnan', phone: '+91 32234 56795', email: 'gopal.books@gmail.com', address: 'College Road, Erode', description: 'Educational books and competitive exam materials', rating: 4.1, reviewCount: 19, status: 'active', isVerified: false, registeredDate: '2023-11-05', lastUpdated: '2023-12-26' },
+    { id: 28, name: 'Shanti Dental Clinic', category: 'Healthcare', owner: 'Dr. Shanti Priya', phone: '+91 21234 56796', email: 'shanti.dental@yahoo.com', address: 'Medical Street, Thanjavur', description: 'Complete dental care and oral health services', rating: 4.8, reviewCount: 67, status: 'active', isVerified: true, registeredDate: '2023-11-03', lastUpdated: '2023-12-24' },
+    { id: 29, name: 'Krishnan Spices', category: 'Grocery', owner: 'Krishnan Raju', phone: '+91 10234 56797', email: 'krishnan.spices@gmail.com', address: 'Spice Market, Dindigul', description: 'Wholesale spices and traditional masala powders', rating: 4.3, reviewCount: 38, status: 'pending', isVerified: false, registeredDate: '2023-11-01', lastUpdated: '2023-12-22' },
+    { id: 30, name: 'Malathi Beauty Salon', category: 'Beauty & Wellness', owner: 'Malathi Sundaram', phone: '+91 09234 56798', email: 'malathi.salon@hotmail.com', address: 'Women Complex, Cuddalore', description: 'Complete beauty treatments and bridal makeup', rating: 4.7, reviewCount: 49, status: 'active', isVerified: true, registeredDate: '2023-10-28', lastUpdated: '2023-12-20' },
   ]);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('all');
   const [filterStatus, setFilterStatus] = useState('all');
-  const [filterDistrict, setFilterDistrict] = useState('all');
+  // const [filterDistrict, setFilterDistrict] = useState('all');
   const [selectedBusiness, setSelectedBusiness] = useState<Business | null>(null);
 
   const categories = ['Electronics', 'Textiles', 'Restaurant', 'IT Services', 'Grocery', 'Auto Repair', 'Beauty & Wellness', 'Fashion', 'Healthcare', 'Hardware', 'Jewellery', 'Furniture', 'Stationery', 'Flowers', 'Photography'];
-  const districts = ['Chennai', 'Coimbatore', 'Madurai', 'Salem', 'Tiruchirappalli', 'Vellore', 'Erode', 'Thanjavur'];
+  // const districts = ['Chennai', 'Coimbatore', 'Madurai', 'Salem', 'Tiruchirappalli', 'Vellore', 'Erode', 'Thanjavur'];
 
   const filteredBusinesses = businesses.filter(business => {
     const matchesSearch = business.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -73,9 +70,9 @@ export default function BusinessesPage() {
                          business.category.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = filterCategory === 'all' || business.category === filterCategory;
     const matchesStatus = filterStatus === 'all' || business.status === filterStatus;
-    const matchesDistrict = filterDistrict === 'all' || business.district === filterDistrict;
+    // const matchesDistrict = filterDistrict === 'all' || business.district === filterDistrict;
     
-    return matchesSearch && matchesCategory && matchesStatus && matchesDistrict;
+    return matchesSearch && matchesCategory && matchesStatus;
   });
 
   const stats = {
@@ -96,7 +93,7 @@ export default function BusinessesPage() {
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Business Directory</h1>
-          <p className="text-gray-600">Manage and monitor business listings across Tamil Nadu</p>
+          <p className="text-gray-600">Manage and monitor business listings</p>
         </div>
 
         {/* Stats Cards */}
@@ -160,7 +157,7 @@ export default function BusinessesPage() {
 
         {/* Filters */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Search</label>
               <input
@@ -197,20 +194,6 @@ export default function BusinessesPage() {
                 <option value="active">Active</option>
                 <option value="pending">Pending</option>
                 <option value="suspended">Suspended</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">District</label>
-              <select
-                value={filterDistrict}
-                onChange={(e) => setFilterDistrict(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="all">All Districts</option>
-                {districts.map(district => (
-                  <option key={district} value={district}>{district}</option>
-                ))}
               </select>
             </div>
           </div>
@@ -252,7 +235,7 @@ export default function BusinessesPage() {
                   <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   </svg>
-                  {business.address}, {business.district}
+                  {business.address}
                 </div>
                 <div className="flex items-center">
                   <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -301,7 +284,7 @@ export default function BusinessesPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <h2 className="text-2xl font-bold">{selectedBusiness.name}</h2>
-                    <p className="text-blue-100">{selectedBusiness.category} • {selectedBusiness.district}</p>
+                    <p className="text-blue-100">{selectedBusiness.category}</p>
                   </div>
                   <button
                     onClick={() => setSelectedBusiness(null)}

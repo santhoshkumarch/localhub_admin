@@ -216,7 +216,7 @@ export default function UsersPage() {
                 <tr>
                   <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
                   <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">Contact</th>
-                  <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                  <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
                   <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">Activity</th>
                   <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                   <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
@@ -241,18 +241,11 @@ export default function UsersPage() {
                       <div className="text-xs sm:text-sm text-gray-500">Joined {user.joinedDate}</div>
                     </td>
                     <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
-                      <div className="space-y-1">
-                        <span className="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded-full">
-                          {user.district}
-                        </span>
-                        <div>
-                          <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                            user.userType === 'business' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
-                          }`}>
-                            {user.userType === 'business' ? 'Business' : 'Individual'}
-                          </span>
-                        </div>
-                      </div>
+                      <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                        user.userType === 'business' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
+                      }`}>
+                        {user.userType === 'business' ? 'Business' : 'Individual'}
+                      </span>
                     </td>
                     <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-xs sm:text-sm text-gray-900 hidden md:table-cell">
                       <div>{user.businessCount} businesses</div>
@@ -349,7 +342,7 @@ export default function UsersPage() {
                   <h3 className="font-semibold text-gray-900">Contact Information</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                     <div><span className="text-gray-600">Phone:</span> <span className="font-medium">{selectedUser.phone}</span></div>
-                    <div><span className="text-gray-600">District:</span> <span className="font-medium">{selectedUser.district}</span></div>
+                    {/* <div><span className="text-gray-600">District:</span> <span className="font-medium">{selectedUser.district}</span></div> */}
                     <div><span className="text-gray-600">Joined:</span> <span className="font-medium">{selectedUser.joinedDate}</span></div>
                     <div><span className="text-gray-600">Last Active:</span> <span className="font-medium">{selectedUser.lastActive}</span></div>
                     <div><span className="text-gray-600">User Type:</span> <span className={`font-medium ${
