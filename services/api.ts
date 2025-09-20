@@ -1,4 +1,4 @@
-const API_BASE_URL = typeof window !== 'undefined' && window.location.hostname !== 'localhost'
+const API_BASE_URL = process.env.NODE_ENV == 'production' 
   ? 'https://localhub_backend.railway.internal/api'
   : 'http://localhost:5000/api';
 
