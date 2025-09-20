@@ -13,12 +13,14 @@ export function getToken(): string | null {
 export function saveToken(token: string) {
   if (typeof window === 'undefined') return;
   localStorage.setItem('access_token', token);
+  document.cookie = `access_token=${token}; path=/; max-age=86400`;
 }
 
 export function clearToken() {
   if (typeof window === 'undefined') return;
   localStorage.removeItem('access_token');
   localStorage.removeItem('user_data');
+  document.cookie = 'access_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
 }
 
 export function saveUser(user: User) {

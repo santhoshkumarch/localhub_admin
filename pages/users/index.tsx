@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '../../components/Layout';
+import { apiService } from '../../services/api';
 
 interface User {
   id: number;
@@ -12,9 +13,9 @@ interface User {
   isActive: boolean;
   isVerified: boolean;
   joinedDate: string;
-  lastActive: string;
-  avatar: string;
-  businesses: Business[];
+  lastActive?: string;
+  avatar?: string;
+  businesses?: Business[];
   userType: 'individual' | 'business';
 }
 
@@ -30,18 +31,8 @@ interface Business {
 }
 
 export default function UsersPage() {
-  const [users, setUsers] = useState<User[]>([
-    { id: 1, email: 'rajesh.kumar@gmail.com', name: 'Rajesh Kumar', phone: '+91 98765 43210', district: 'Chennai', businessCount: 2, postsCount: 15, isActive: true, isVerified: true, joinedDate: '2024-01-15', lastActive: '2 hours ago', avatar: 'RK', userType: 'business', businesses: [{ id: 1, name: 'Kumar Electronics', category: 'Electronics', address: 'T. Nagar, Chennai', phone: '+91 98765 43210', status: 'active', rating: 4.5, reviewCount: 23 }, { id: 2, name: 'RK Mobile Service', category: 'Mobile Repair', address: 'Anna Nagar, Chennai', phone: '+91 98765 43211', status: 'active', rating: 4.2, reviewCount: 18 }] },
-    { id: 2, email: 'priya.s@yahoo.com', name: 'Priya Selvam', phone: '+91 87654 32109', district: 'Coimbatore', businessCount: 1, postsCount: 8, isActive: true, isVerified: true, joinedDate: '2024-01-12', lastActive: '1 day ago', avatar: 'PS', userType: 'business', businesses: [{ id: 3, name: 'Priya Textiles', category: 'Textiles', address: 'RS Puram, Coimbatore', phone: '+91 87654 32109', status: 'active', rating: 4.7, reviewCount: 35 }] },
-    { id: 3, email: 'muthu.restaurant@gmail.com', name: 'Muthu Raman', phone: '+91 76543 21098', district: 'Madurai', businessCount: 1, postsCount: 22, isActive: true, isVerified: false, joinedDate: '2024-01-10', lastActive: '3 hours ago', avatar: 'MR', userType: 'business', businesses: [{ id: 4, name: 'Muthu Restaurant', category: 'Restaurant', address: 'Meenakshi Amman Temple St, Madurai', phone: '+91 76543 21098', status: 'active', rating: 4.3, reviewCount: 67 }] },
-    { id: 4, email: 'anitha.textiles@hotmail.com', name: 'Anitha Devi', phone: '+91 65432 10987', district: 'Salem', businessCount: 1, postsCount: 5, isActive: false, isVerified: true, joinedDate: '2024-01-08', lastActive: '1 week ago', avatar: 'AD', userType: 'business', businesses: [{ id: 5, name: 'Anitha Saree Center', category: 'Textiles', address: 'Main Bazaar, Salem', phone: '+91 65432 10987', status: 'suspended', rating: 3.8, reviewCount: 12 }] },
-    { id: 5, email: 'kumar.tech@gmail.com', name: 'Kumar Krishnan', phone: '+91 54321 09876', district: 'Tiruchirappalli', businessCount: 0, postsCount: 12, isActive: true, isVerified: false, joinedDate: '2024-01-05', lastActive: '5 minutes ago', avatar: 'KK', userType: 'individual', businesses: [] },
-    { id: 6, email: 'lakshmi.store@gmail.com', name: 'Lakshmi Narayanan', phone: '+91 43210 98765', district: 'Vellore', businessCount: 1, postsCount: 18, isActive: true, isVerified: true, joinedDate: '2024-01-03', lastActive: '1 hour ago', avatar: 'LN', userType: 'business', businesses: [{ id: 6, name: 'Lakshmi General Store', category: 'Grocery', address: 'Gandhi Road, Vellore', phone: '+91 43210 98765', status: 'active', rating: 4.1, reviewCount: 28 }] },
-    { id: 7, email: 'ravi.motors@yahoo.com', name: 'Ravi Chandran', phone: '+91 32109 87654', district: 'Erode', businessCount: 1, postsCount: 7, isActive: true, isVerified: true, joinedDate: '2023-12-28', lastActive: '4 hours ago', avatar: 'RC', userType: 'business', businesses: [{ id: 7, name: 'Ravi Auto Works', category: 'Auto Repair', address: 'Perundurai Road, Erode', phone: '+91 32109 87654', status: 'active', rating: 4.4, reviewCount: 19 }] },
-    { id: 8, email: 'meera.fashion@gmail.com', name: 'Meera Balan', phone: '+91 21098 76543', district: 'Thanjavur', businessCount: 1, postsCount: 25, isActive: true, isVerified: false, joinedDate: '2023-12-25', lastActive: '2 days ago', avatar: 'MB', userType: 'individual', businesses: [{ id: 8, name: 'Meera Fashion Boutique', category: 'Fashion', address: 'Big Temple Street, Thanjavur', phone: '+91 21098 76543', status: 'pending', rating: 4.6, reviewCount: 41 }] },
-    { id: 9, email: 'suresh.electronics@hotmail.com', name: 'Suresh Babu', phone: '+91 10987 65432', district: 'Dindigul', businessCount: 1, postsCount: 9, isActive: false, isVerified: true, joinedDate: '2023-12-20', lastActive: '3 days ago', avatar: 'SB', userType: 'business', businesses: [{ id: 9, name: 'Suresh Electronics', category: 'Electronics', address: 'Palani Road, Dindigul', phone: '+91 10987 65432', status: 'active', rating: 3.9, reviewCount: 15 }] },
-    { id: 10, email: 'divya.beauty@gmail.com', name: 'Divya Priya', phone: '+91 09876 54321', district: 'Cuddalore', businessCount: 1, postsCount: 14, isActive: true, isVerified: true, joinedDate: '2023-12-18', lastActive: '6 hours ago', avatar: 'DP', userType: 'individual', businesses: [{ id: 10, name: 'Divya Beauty Parlour', category: 'Beauty & Wellness', address: 'Old Town, Cuddalore', phone: '+91 09876 54321', status: 'active', rating: 4.8, reviewCount: 52 }] },
-  ]);
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
@@ -52,6 +43,25 @@ export default function UsersPage() {
   const [editForm, setEditForm] = useState<Partial<User>>({});
 
   const districts = ['Chennai', 'Coimbatore', 'Madurai', 'Salem', 'Tiruchirappalli', 'Vellore', 'Erode', 'Thanjavur', 'Dindigul', 'Cuddalore'];
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      setLoading(true);
+      const response = await apiService.getUsers();
+      console.log('Users response:', response);
+      const usersData = Array.isArray(response) ? response : (response.users || []);
+      console.log('Setting users:', usersData);
+      setUsers(usersData);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const filteredUsers = users.filter(user => {
     const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -168,7 +178,7 @@ export default function UsersPage() {
               </select>
             </div>
 
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">District</label>
               <select
                 value={filterDistrict}
@@ -180,7 +190,7 @@ export default function UsersPage() {
                   <option key={district} value={district}>{district}</option>
                 ))}
               </select>
-            </div>
+            </div> */}
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">User Type</label>
@@ -210,87 +220,107 @@ export default function UsersPage() {
             <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Users ({filteredUsers.length})</h2>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-                  <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">Contact</th>
-                  <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                  <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">Activity</th>
-                  <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {filteredUsers.map((user) => (
-                  <tr key={user.id} className="hover:bg-gray-50">
-                    <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white font-medium text-xs sm:text-sm" style={{background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)'}}>
-                          {user.avatar}
-                        </div>
-                        <div className="ml-2 sm:ml-4 min-w-0 flex-1">
-                          <div className="text-xs sm:text-sm font-medium text-gray-900 truncate">{user.name}</div>
-                          <div className="text-xs sm:text-sm text-gray-500 truncate">{user.email}</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-3 sm:px-6 py-4 whitespace-nowrap hidden sm:table-cell">
-                      <div className="text-xs sm:text-sm text-gray-900">{user.phone}</div>
-                      <div className="text-xs sm:text-sm text-gray-500">Joined {user.joinedDate}</div>
-                    </td>
-                    <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
-                      <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                        user.userType === 'business' ? 'text-white' : 'bg-green-100 text-green-800'
-                      }`} style={user.userType === 'business' ? {backgroundColor: '#e5080c'} : {}}>
-                        {user.userType === 'business' ? 'Business' : 'Individual'}
-                      </span>
-                    </td>
-                    <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-xs sm:text-sm text-gray-900 hidden md:table-cell">
-                      <div>{user.businessCount} businesses</div>
-                      <div className="text-gray-500">{user.postsCount} posts</div>
-                    </td>
-                    <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
-                      <div className="flex flex-col space-y-1">
-                        <span className={`px-2 py-1 text-xs font-medium rounded-full ${user.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                          {user.isActive ? 'Active' : 'Inactive'}
-                        </span>
-                        {user.isVerified && (
-                          <span className="px-2 py-1 text-xs font-medium text-white rounded-full" style={{backgroundColor: '#e5080c'}}>
-                            Verified
-                          </span>
-                        )}
-                      </div>
-                    </td>
-                    <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-xs sm:text-sm font-medium">
-                      <div className="flex flex-col sm:flex-row space-y-1 sm:space-y-0 sm:space-x-2">
-                        <button 
-                          onClick={() => { setSelectedUser(user); setModalType('view'); }}
-                          className="text-left hover:opacity-80"
-                          style={{color: '#e5080c'}}
-                        >
-                          View
-                        </button>
-                        <button 
-                          onClick={() => { setSelectedUser(user); setEditForm(user); setModalType('edit'); }}
-                          className="text-green-600 hover:text-green-900 text-left"
-                        >
-                          Edit
-                        </button>
-                        <button 
-                          onClick={() => handleSuspend(user.id)}
-                          className="text-red-600 hover:text-red-900 text-left"
-                        >
-                          {user.isActive ? 'Suspend' : 'Activate'}
-                        </button>
-                      </div>
-                    </td>
+          {loading ? (
+            <div className="flex items-center justify-center py-12">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2" style={{borderColor: '#e5080c'}}></div>
+              <span className="ml-2 text-gray-600">Loading users...</span>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                    <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">Contact</th>
+                    <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                    <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">Activity</th>
+                    <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {filteredUsers.length === 0 ? (
+                    <tr>
+                      <td colSpan={6} className="px-6 py-12 text-center text-gray-500">
+                        No users found
+                      </td>
+                    </tr>
+                  ) : (
+                    filteredUsers.map((user) => {
+                      const initials = user.name.split(' ').map(n => n[0]).join('').toUpperCase();
+                      const joinedDate = new Date(user.joinedDate).toLocaleDateString();
+                      
+                      return (
+                        <tr key={user.id} className="hover:bg-gray-50">
+                          <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
+                            <div className="flex items-center">
+                              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white font-medium text-xs sm:text-sm" style={{background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)'}}>
+                                {initials}
+                              </div>
+                              <div className="ml-2 sm:ml-4 min-w-0 flex-1">
+                                <div className="text-xs sm:text-sm font-medium text-gray-900 truncate">{user.name}</div>
+                                <div className="text-xs sm:text-sm text-gray-500 truncate">{user.email}</div>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="px-3 sm:px-6 py-4 whitespace-nowrap hidden sm:table-cell">
+                            <div className="text-xs sm:text-sm text-gray-900">{user.phone}</div>
+                            <div className="text-xs sm:text-sm text-gray-500">Joined {joinedDate}</div>
+                          </td>
+                          <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
+                            <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                              user.userType === 'business' ? 'text-white' : 'bg-green-100 text-green-800'
+                            }`} style={user.userType === 'business' ? {backgroundColor: '#e5080c'} : {}}>
+                              {user.userType === 'business' ? 'Business' : 'Individual'}
+                            </span>
+                          </td>
+                          <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-xs sm:text-sm text-gray-900 hidden md:table-cell">
+                            <div>{user.businessCount || 0} businesses</div>
+                            <div className="text-gray-500">{user.postsCount || 0} posts</div>
+                          </td>
+                          <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
+                            <div className="flex flex-col space-y-1">
+                              <span className={`px-2 py-1 text-xs font-medium rounded-full ${user.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                                {user.isActive ? 'Active' : 'Inactive'}
+                              </span>
+                              {user.isVerified && (
+                                <span className="px-2 py-1 text-xs font-medium text-white rounded-full" style={{backgroundColor: '#e5080c'}}>
+                                  Verified
+                                </span>
+                              )}
+                            </div>
+                          </td>
+                          <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-xs sm:text-sm font-medium">
+                            <div className="flex flex-col sm:flex-row space-y-1 sm:space-y-0 sm:space-x-2">
+                              <button 
+                                onClick={() => { setSelectedUser(user); setModalType('view'); }}
+                                className="text-left hover:opacity-80"
+                                style={{color: '#e5080c'}}
+                              >
+                                View
+                              </button>
+                              <button 
+                                onClick={() => { setSelectedUser(user); setEditForm(user); setModalType('edit'); }}
+                                className="text-green-600 hover:text-green-900 text-left"
+                              >
+                                Edit
+                              </button>
+                              <button 
+                                onClick={() => handleSuspend(user.id)}
+                                className="text-red-600 hover:text-red-900 text-left"
+                              >
+                                {user.isActive ? 'Suspend' : 'Activate'}
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
 
         {/* View User Modal */}
@@ -344,8 +374,8 @@ export default function UsersPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                     <div><span className="text-gray-600">Phone:</span> <span className="font-medium">{selectedUser.phone}</span></div>
                     {/* <div><span className="text-gray-600">District:</span> <span className="font-medium">{selectedUser.district}</span></div> */}
-                    <div><span className="text-gray-600">Joined:</span> <span className="font-medium">{selectedUser.joinedDate}</span></div>
-                    <div><span className="text-gray-600">Last Active:</span> <span className="font-medium">{selectedUser.lastActive}</span></div>
+                    <div><span className="text-gray-600">Joined:</span> <span className="font-medium">{new Date(selectedUser.joinedDate).toLocaleDateString()}</span></div>
+                    <div><span className="text-gray-600">Last Active:</span> <span className="font-medium">{selectedUser.lastActive || 'N/A'}</span></div>
                     <div><span className="text-gray-600">User Type:</span> <span className={`font-medium ${
                       selectedUser.userType === 'business' ? '' : 'text-green-600'
                     }`} style={selectedUser.userType === 'business' ? {color: '#e5080c'} : {}}>{selectedUser.userType === 'business' ? 'Business User' : 'Individual User'}</span></div>
@@ -354,53 +384,8 @@ export default function UsersPage() {
 
                 {/* User Businesses */}
                 <div className="bg-gray-50 rounded-lg p-4">
-                  <h3 className="font-semibold text-gray-900 mb-4">Businesses ({selectedUser.businesses.length})</h3>
-                  {selectedUser.businesses.length === 0 ? (
-                    <p className="text-gray-500 text-sm">No businesses registered</p>
-                  ) : (
-                    <div className="space-y-3">
-                      {selectedUser.businesses.map((business) => (
-                        <div key={business.id} className="bg-white rounded-lg p-4 border border-gray-200">
-                          <div className="flex items-start justify-between mb-2">
-                            <div>
-                              <h4 className="font-medium text-gray-900">{business.name}</h4>
-                              <p className="text-sm text-gray-600">{business.category}</p>
-                            </div>
-                            <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                              business.status === 'active' ? 'bg-green-100 text-green-800' :
-                              business.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                              'bg-red-100 text-red-800'
-                            }`}>
-                              {business.status}
-                            </span>
-                          </div>
-                          <div className="text-sm text-gray-600 space-y-1">
-                            <div className="flex items-center">
-                              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                              </svg>
-                              {business.address}
-                            </div>
-                            <div className="flex items-center">
-                              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                              </svg>
-                              {business.phone}
-                            </div>
-                            <div className="flex items-center justify-between mt-2">
-                              <div className="flex items-center">
-                                <svg className="w-4 h-4 mr-1 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
-                                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                                </svg>
-                                <span className="text-sm font-medium">{business.rating}</span>
-                                <span className="text-xs text-gray-500 ml-1">({business.reviewCount} reviews)</span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                  <h3 className="font-semibold text-gray-900 mb-4">Businesses ({selectedUser.businessCount || 0})</h3>
+                  <p className="text-gray-500 text-sm">Business details will be loaded from the businesses table</p>
                 </div>
               </div>
             </div>
@@ -455,7 +440,7 @@ export default function UsersPage() {
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
-                    <div>
+                    {/* <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">District</label>
                       <select
                         value={editForm.district || ''}
@@ -466,7 +451,7 @@ export default function UsersPage() {
                           <option key={district} value={district}>{district}</option>
                         ))}
                       </select>
-                    </div>
+                    </div> */}
                   </div>
 
                   <div className="flex items-center space-x-4">
@@ -515,19 +500,28 @@ export default function UsersPage() {
     </Layout>
   );
 
-  function handleSuspend(userId: number) {
-    setUsers(users.map(user => 
-      user.id === userId ? { ...user, isActive: !user.isActive } : user
-    ));
+  async function handleSuspend(userId: number) {
+    try {
+      console.log('Toggling status for user:', userId);
+      const result = await apiService.toggleUserStatus(userId);
+      console.log('Toggle result:', result);
+      await fetchUsers();
+    } catch (error) {
+      console.error('Error toggling user status:', error);
+      alert('Failed to update user status: ' + (error instanceof Error ? error.message : String(error)));
+    }
   }
 
-  function handleSaveUser() {
+  async function handleSaveUser() {
     if (selectedUser && editForm) {
-      setUsers(users.map(user => 
-        user.id === selectedUser.id ? { ...user, ...editForm } : user
-      ));
-      setModalType(null);
-      setSelectedUser(null);
+      try {
+        await apiService.updateUser(selectedUser.id, editForm);
+        await fetchUsers();
+        setModalType(null);
+        setSelectedUser(null);
+      } catch (error) {
+        console.error('Error updating user:', error);
+      }
     }
   }
 }

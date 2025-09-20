@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { getUser, User } from '../lib/auth';
+import { getUser, User, clearToken } from '../lib/auth';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -14,9 +14,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('user_data');
-    router.push('/login');
+    clearToken();
+    window.location.href = '/login';
   };
 
   const isActive = (path: string) => router.pathname === path;

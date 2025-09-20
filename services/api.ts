@@ -1,13 +1,23 @@
-const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://localhub-backend-production.up.railway.app/api'
-  : 'http://localhost:5000/api';
+// const API_BASE_URL = process.env.NODE_ENV === 'production' 
+//   ? 'https://localhub-backend-production.up.railway.app/api'
+//   : 'http://localhost:5000/api';
+
+// const API_BASE_URL = 'https://localhub-backend-production.up.railway.app/api';
+
+const API_BASE_URL = 'http://localhost:5000/api';
 
 class ApiService {
+  private getAuthHeaders(): Record<string, string> {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
+    return token ? { 'Authorization': `Bearer ${token}` } : {};
+  }
+
   private async request(endpoint: string, options: RequestInit = {}) {
     const url = `${API_BASE_URL}${endpoint}`;
     const config = {
       headers: {
         'Content-Type': 'application/json',
+        ...this.getAuthHeaders(),
         ...options.headers,
       },
       ...options,
@@ -36,10 +46,33 @@ class ApiService {
     return this.request('/users');
   }
 
+  async getUser(id: number) {
+    return this.request(`/users/${id}`);
+  }
+
+  async createUser(data: any) {
+    return this.request('/users', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
   async updateUser(id: number, data: any) {
     return this.request(`/users/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
+    });
+  }
+
+  async deleteUser(id: number) {
+    return this.request(`/users/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async toggleUserStatus(id: number) {
+    return this.request(`/users/${id}/toggle-status`, {
+      method: 'PATCH',
     });
   }
 
