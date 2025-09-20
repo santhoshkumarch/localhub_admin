@@ -18,7 +18,8 @@ interface Post {
   title: string;
   content: string;
   author: string;
-  labels: string[];
+  assignedLabel?: string;
+  menuId?: number;
   likes: number;
   comments: number;
   createdAt: string;
@@ -26,26 +27,27 @@ interface Post {
 
 export default function MenusPage() {
   const [menus, setMenus] = useState<Menu[]>([
-    { id: 1, name: 'Jobs', description: 'Job opportunities and career posts', icon: '💼', labels: ['jobs', 'career', 'hiring'], timeFilter: '3months', postCount: 15, isActive: true, createdAt: '2024-01-15' },
-    { id: 2, name: 'Food & Restaurants', description: 'All food-related businesses and posts', icon: '🍽️', labels: ['food', 'restaurant', 'catering'], timeFilter: '1month', postCount: 12, isActive: true, createdAt: '2024-01-14' },
-    { id: 3, name: 'Shopping', description: 'Shopping and retail businesses', icon: '🛍️', labels: ['shopping', 'retail', 'store'], timeFilter: '6months', postCount: 18, isActive: true, createdAt: '2024-01-13' },
-    { id: 4, name: 'Services', description: 'Professional services', icon: '🔧', labels: ['service', 'repair'], timeFilter: 'all', postCount: 8, isActive: false, createdAt: '2024-01-12' },
+    { id: 1, name: 'Jobs', description: 'Job opportunities and career posts', icon: '💼', labels: ['Career', 'Vacancy', 'Full-time Job', 'Part-time Job', 'Internship'], timeFilter: '3months', postCount: 15, isActive: true, createdAt: '2024-01-15' },
+    { id: 2, name: 'Offers', description: 'Deals and promotional offers', icon: '🏷️', labels: ['Discounts', 'Coupons', 'Sale', 'Special Offer'], timeFilter: '1month', postCount: 12, isActive: true, createdAt: '2024-01-14' },
+    { id: 3, name: 'Events', description: 'Community and business events', icon: '🎉', labels: ['Workshop', 'Seminar', 'Conference', 'Networking'], timeFilter: '6months', postCount: 18, isActive: true, createdAt: '2024-01-13' },
+    { id: 4, name: 'Services', description: 'Professional services', icon: '🔧', labels: ['Repair', 'Maintenance', 'Consultation'], timeFilter: 'all', postCount: 8, isActive: false, createdAt: '2024-01-12' },
   ]);
 
   const [posts] = useState<Post[]>([
-    { id: 1, title: 'Software Developer Position Open', content: 'Looking for experienced React developer...', author: 'Tech Corp', labels: ['jobs', 'career'], likes: 23, comments: 5, createdAt: '2024-01-16' },
-    { id: 2, title: 'Marketing Manager Hiring', content: 'Join our dynamic marketing team...', author: 'Digital Agency', labels: ['jobs', 'hiring'], likes: 18, comments: 3, createdAt: '2024-01-15' },
-    { id: 3, title: 'New Restaurant Opens', content: 'Authentic Tamil cuisine available...', author: 'Muthu Restaurant', labels: ['food', 'restaurant'], likes: 12, comments: 2, createdAt: '2024-01-14' },
-    { id: 4, title: 'Fresh Vegetables Available', content: 'Farm fresh vegetables delivered...', author: 'Green Mart', labels: ['food', 'shopping'], likes: 31, comments: 8, createdAt: '2024-01-13' },
-    { id: 5, title: 'Mobile Repair Service', content: 'Quick mobile repair services...', author: 'Tech Solutions', labels: ['service', 'repair'], likes: 27, comments: 6, createdAt: '2024-01-12' },
+    { id: 1, title: 'We are hiring Full-time Sales Executive', content: 'Looking for experienced sales professional for full-time position...', author: 'Tech Corp', assignedLabel: 'Full-time Job', menuId: 1, likes: 23, comments: 5, createdAt: '2024-01-16' },
+    { id: 2, title: 'Part-time Delivery Boy needed', content: 'Join our delivery team for part-time work...', author: 'Digital Agency', assignedLabel: 'Part-time Job', menuId: 1, likes: 18, comments: 3, createdAt: '2024-01-15' },
+    { id: 3, title: 'Summer Internship opportunity', content: 'Internship program for students...', author: 'StartupHub', assignedLabel: 'Internship', menuId: 1, likes: 12, comments: 2, createdAt: '2024-01-14' },
+    { id: 4, title: '50% Off Electronics Sale', content: 'Huge discount on all electronics...', author: 'ElectroMart', assignedLabel: 'Discounts', menuId: 2, likes: 31, comments: 8, createdAt: '2024-01-13' },
+    { id: 5, title: 'Mobile Repair Service', content: 'Quick mobile repair services...', author: 'Tech Solutions', assignedLabel: 'Repair', menuId: 4, likes: 27, comments: 6, createdAt: '2024-01-12' },
   ]);
 
   const [selectedMenu, setSelectedMenu] = useState<Menu | null>(null);
   const [newMenu, setNewMenu] = useState({ name: '', description: '', icon: '', labels: [] as string[], timeFilter: '3months' as const });
+  const [newLabel, setNewLabel] = useState('');
   const [isCreating, setIsCreating] = useState(false);
   const [showCreateForm, setShowCreateForm] = useState(false);
 
-  const availableLabels = ['jobs', 'career', 'hiring', 'food', 'restaurant', 'shopping', 'retail', 'service', 'repair', 'health', 'medical', 'catering', 'store', 'maintenance', 'clinic'];
+  const predefinedLabels = ['Career', 'Vacancy', 'Full-time Job', 'Part-time Job', 'Internship', 'Discounts', 'Coupons', 'Sale', 'Special Offer', 'Workshop', 'Seminar', 'Conference', 'Networking', 'Repair', 'Maintenance', 'Consultation', 'Training', 'Support', 'Emergency'];
 
   const availableIcons = ['💼', '🍽️', '🛍️', '🔧', '🏥', '🎓', '🏠', '🚗', '💻', '📱', '🎨', '⚽', '🎵', '📚', '✈️', '🌟'];
 
@@ -63,7 +65,6 @@ export default function MenusPage() {
     setIsCreating(true);
     await new Promise(resolve => setTimeout(resolve, 500));
 
-    const filteredPosts = getFilteredPosts(posts, newMenu.labels, newMenu.timeFilter);
     const menu: Menu = {
       id: Date.now(),
       name: newMenu.name,
@@ -71,7 +72,7 @@ export default function MenusPage() {
       icon: newMenu.icon,
       labels: newMenu.labels,
       timeFilter: newMenu.timeFilter,
-      postCount: filteredPosts.length,
+      postCount: 0,
       isActive: true,
       createdAt: new Date().toISOString().split('T')[0],
     };
@@ -82,12 +83,12 @@ export default function MenusPage() {
     setIsCreating(false);
   };
 
-  const getFilteredPosts = (allPosts: Post[], labels: string[], timeFilter: string) => {
-    let filtered = allPosts.filter(post => post.labels.some(label => labels.includes(label)));
+  const getMenuPosts = (menu: Menu) => {
+    let filtered = posts.filter(post => post.menuId === menu.id);
     
-    if (timeFilter !== 'all') {
+    if (menu.timeFilter !== 'all') {
       const now = new Date();
-      const months = timeFilter === '1month' ? 1 : timeFilter === '3months' ? 3 : 6;
+      const months = menu.timeFilter === '1month' ? 1 : menu.timeFilter === '3months' ? 3 : 6;
       const cutoffDate = new Date(now.getFullYear(), now.getMonth() - months, now.getDate());
       filtered = filtered.filter(post => new Date(post.createdAt) >= cutoffDate);
     }
@@ -95,11 +96,24 @@ export default function MenusPage() {
     return filtered;
   };
 
-  const getMenuPosts = (menu: Menu) => {
-    return getFilteredPosts(posts, menu.labels, menu.timeFilter);
+  const addLabel = () => {
+    if (newLabel.trim() && !newMenu.labels.includes(newLabel.trim())) {
+      setNewMenu(prev => ({
+        ...prev,
+        labels: [...prev.labels, newLabel.trim()]
+      }));
+      setNewLabel('');
+    }
   };
 
-  const toggleLabel = (label: string) => {
+  const removeLabel = (label: string) => {
+    setNewMenu(prev => ({
+      ...prev,
+      labels: prev.labels.filter(l => l !== label)
+    }));
+  };
+
+  const togglePredefinedLabel = (label: string) => {
     setNewMenu(prev => ({
       ...prev,
       labels: prev.labels.includes(label)
@@ -194,23 +208,72 @@ export default function MenusPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Select Labels</label>
-                <div className="flex flex-wrap gap-2">
-                  {availableLabels.map((label) => (
+                <label className="block text-sm font-medium text-gray-700 mb-2">Labels</label>
+                
+                <div className="mb-4">
+                  <h4 className="text-sm font-medium text-gray-600 mb-2">Predefined Labels</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {predefinedLabels.map((label) => (
+                      <button
+                        key={label}
+                        type="button"
+                        onClick={() => togglePredefinedLabel(label)}
+                        className={`px-3 py-1 rounded-full text-sm font-medium border transition-all duration-200 ${
+                          newMenu.labels.includes(label)
+                            ? 'text-white border-red-200'
+                            : 'bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200'
+                        }`}
+                        style={newMenu.labels.includes(label) ? {backgroundColor: '#e5080c'} : {}}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                
+                <div className="mb-3">
+                  <h4 className="text-sm font-medium text-gray-600 mb-2">Add Custom Label</h4>
+                  <div className="flex space-x-2">
+                    <input
+                      type="text"
+                      value={newLabel}
+                      onChange={(e) => setNewLabel(e.target.value)}
+                      onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addLabel())}
+                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent"
+                      style={{'--tw-ring-color': '#e5080c'} as any}
+                      placeholder="e.g., Remote Job"
+                    />
                     <button
-                      key={label}
                       type="button"
-                      onClick={() => toggleLabel(label)}
-                      className={`px-3 py-1 rounded-full text-sm font-medium border transition-all duration-200 ${
-                        newMenu.labels.includes(label)
-                          ? 'text-white border-red-200'
-                          : 'bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200'
-                      }`}
-                      style={newMenu.labels.includes(label) ? {backgroundColor: '#e5080c'} : {}}
+                      onClick={addLabel}
+                      className="text-white px-4 py-2 rounded-lg transition-colors hover:opacity-90"
+                      style={{backgroundColor: '#e5080c'}}
                     >
-                      {label}
+                      Add
                     </button>
-                  ))}
+                  </div>
+                </div>
+                
+                <div>
+                  <h4 className="text-sm font-medium text-gray-600 mb-2">Selected Labels</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {newMenu.labels.map((label) => (
+                      <span
+                        key={label}
+                        className="px-3 py-1 text-white text-sm rounded-full flex items-center space-x-2"
+                        style={{backgroundColor: '#e5080c'}}
+                      >
+                        <span>{label}</span>
+                        <button
+                          type="button"
+                          onClick={() => removeLabel(label)}
+                          className="text-white hover:text-red-200"
+                        >
+                          ×
+                        </button>
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
 
@@ -348,15 +411,13 @@ export default function MenusPage() {
                             </div>
                           </div>
                         </div>
-                        <div className="mt-3">
-                          <div className="flex flex-wrap gap-1">
-                            {post.labels.map((label) => (
-                              <span key={label} className="px-2 py-1 text-white text-xs rounded-full" style={{backgroundColor: '#e5080c'}}>
-                                {label}
-                              </span>
-                            ))}
+                        {post.assignedLabel && (
+                          <div className="mt-3">
+                            <span className="px-2 py-1 text-white text-xs rounded-full" style={{backgroundColor: '#e5080c'}}>
+                              {post.assignedLabel}
+                            </span>
                           </div>
-                        </div>
+                        )}
                       </div>
                     ))}
                   </div>
