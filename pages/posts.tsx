@@ -13,10 +13,14 @@ interface Post {
   likes: number;
   comments: number;
   shares: number;
-  status: 'published' | 'pending' | 'rejected';
+  status: 'published' | 'pending' | 'rejected' | 'expired';
   createdAt: string;
   updatedAt: string;
   imageUrl?: string;
+  viewDuration?: number; // in days
+  expiresAt?: string;
+  viewLimit?: number;
+  currentViews?: number;
 }
 
 export default function PostsPage() {
@@ -48,6 +52,12 @@ export default function PostsPage() {
   const [filterCategory, setFilterCategory] = useState('all');
   const [filterDistrict, setFilterDistrict] = useState('all');
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const [showDurationModal, setShowDurationModal] = useState(false);
+  const [durationPost, setDurationPost] = useState<Post | null>(null);
+  const [viewDuration, setViewDuration] = useState(30);
+  const [showViewLimitModal, setShowViewLimitModal] = useState(false);
+  const [viewLimitPost, setViewLimitPost] = useState<Post | null>(null);
+  const [viewLimit, setViewLimit] = useState(100);
 
   const categories = ['Restaurant', 'Electronics', 'Textiles', 'Grocery', 'Auto Repair', 'Fashion', 'Beauty & Wellness', 'Healthcare', 'Hardware', 'Jewellery', 'Food & Dining'];
   const districts = ['Chennai', 'Coimbatore', 'Madurai', 'Salem', 'Tiruchirappalli', 'Vellore', 'Erode', 'Thanjavur', 'Dindigul', 'Cuddalore'];
@@ -74,6 +84,54 @@ export default function PostsPage() {
     setPosts(posts.map(post =>
       post.id === postId ? { ...post, status: newStatus } : post
     ));
+  };
+
+  const handleSetDuration = (post: Post) => {
+    setDurationPost(post);
+    setViewDuration(post.viewDuration || 30);
+    setShowDurationModal(true);
+  };
+
+  const handleSaveDuration = () => {
+    if (durationPost) {
+      const expiresAt = new Date();
+      expiresAt.setDate(expiresAt.getDate() + viewDuration);
+      
+      setPosts(posts.map(post =>
+        post.id === durationPost.id 
+          ? { ...post, viewDuration, expiresAt: expiresAt.toISOString().split('T')[0] }
+          : post
+      ));
+    }
+    setShowDurationModal(false);
+    setDurationPost(null);
+  };
+
+  const handleSetViewLimit = (post: Post) => {
+    setViewLimitPost(post);
+    setViewLimit(post.viewLimit || 100);
+    setShowViewLimitModal(true);
+  };
+
+  const handleSaveViewLimit = () => {
+    if (viewLimitPost) {
+      setPosts(posts.map(post =>
+        post.id === viewLimitPost.id 
+          ? { ...post, viewLimit, currentViews: post.currentViews || 0 }
+          : post
+      ));
+    }
+    setShowViewLimitModal(false);
+    setViewLimitPost(null);
+  };
+
+  const getDaysRemaining = (expiresAt?: string) => {
+    if (!expiresAt) return null;
+    const today = new Date();
+    const expiry = new Date(expiresAt);
+    const diffTime = expiry.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
   };
 
   return (
@@ -265,6 +323,18 @@ export default function PostsPage() {
                   >
                     View Details
                   </button>
+                  <button
+                    onClick={() => handleSetDuration(post)}
+                    className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition-colors"
+                  >
+                    Set Duration
+                  </button>
+                  <button
+                    onClick={() => handleSetViewLimit(post)}
+                    className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-700 transition-colors"
+                  >
+                    Set View Limit
+                  </button>
                   <select
                     value={post.status}
                     onChange={(e) => handleStatusChange(post.id, e.target.value as any)}
@@ -273,12 +343,141 @@ export default function PostsPage() {
                     <option value="published">Published</option>
                     <option value="pending">Pending</option>
                     <option value="rejected">Rejected</option>
+                    <option value="expired">Expired</option>
                   </select>
+                  {post.expiresAt && (
+                    <div className="text-xs text-gray-500">
+                      {getDaysRemaining(post.expiresAt) !== null && (
+                        <span className={getDaysRemaining(post.expiresAt)! <= 3 ? 'text-red-600' : 'text-gray-600'}>
+                          {getDaysRemaining(post.expiresAt)! > 0 
+                            ? `${getDaysRemaining(post.expiresAt)} days left`
+                            : 'Expired'
+                          }
+                        </span>
+                      )}
+                    </div>
+                  )}
+                  {post.viewLimit && (
+                    <div className="text-xs text-gray-500">
+                      <span className={(post.currentViews || 0) >= post.viewLimit ? 'text-red-600' : 'text-gray-600'}>
+                        {post.currentViews || 0}/{post.viewLimit} views
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
           ))}
         </div>
+
+        {/* Duration Setting Modal */}
+        {showDurationModal && durationPost && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full">
+              <div className="text-white p-6 rounded-t-2xl" style={{background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)'}}>
+                <h2 className="text-xl font-bold">Set Post Duration</h2>
+                <p className="text-red-100 text-sm">{durationPost.title}</p>
+              </div>
+              
+              <div className="p-6">
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    View Duration (Days)
+                  </label>
+                  <select
+                    value={viewDuration}
+                    onChange={(e) => setViewDuration(parseInt(e.target.value))}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent"
+                    style={{'--tw-ring-color': '#e5080c'} as any}
+                  >
+                    <option value={7}>7 days</option>
+                    <option value={15}>15 days</option>
+                    <option value={30}>30 days (1 month)</option>
+                    <option value={60}>60 days (2 months)</option>
+                    <option value={90}>90 days (3 months)</option>
+                    <option value={180}>180 days (6 months)</option>
+                    <option value={365}>365 days (1 year)</option>
+                  </select>
+                </div>
+                
+                <div className="text-sm text-gray-600 mb-6">
+                  Post will be automatically unpublished after {viewDuration} days from today.
+                </div>
+                
+                <div className="flex space-x-3">
+                  <button
+                    onClick={handleSaveDuration}
+                    className="flex-1 text-white px-4 py-2 rounded-lg transition-colors hover:opacity-90"
+                    style={{backgroundColor: '#e5080c'}}
+                  >
+                    Set Duration
+                  </button>
+                  <button
+                    onClick={() => setShowDurationModal(false)}
+                    className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* View Limit Setting Modal */}
+        {showViewLimitModal && viewLimitPost && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full">
+              <div className="text-white p-6 rounded-t-2xl" style={{background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)'}}>
+                <h2 className="text-xl font-bold">Set View Limit</h2>
+                <p className="text-red-100 text-sm">{viewLimitPost.title}</p>
+              </div>
+              
+              <div className="p-6">
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Maximum Views
+                  </label>
+                  <select
+                    value={viewLimit}
+                    onChange={(e) => setViewLimit(parseInt(e.target.value))}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent"
+                    style={{'--tw-ring-color': '#e5080c'} as any}
+                  >
+                    <option value={50}>50 views</option>
+                    <option value={100}>100 views</option>
+                    <option value={250}>250 views</option>
+                    <option value={500}>500 views</option>
+                    <option value={1000}>1,000 views</option>
+                    <option value={2500}>2,500 views</option>
+                    <option value={5000}>5,000 views</option>
+                    <option value={10000}>10,000 views</option>
+                  </select>
+                </div>
+                
+                <div className="text-sm text-gray-600 mb-6">
+                  Post will be automatically unpublished after reaching {viewLimit.toLocaleString()} views.
+                </div>
+                
+                <div className="flex space-x-3">
+                  <button
+                    onClick={handleSaveViewLimit}
+                    className="flex-1 text-white px-4 py-2 rounded-lg transition-colors hover:opacity-90"
+                    style={{backgroundColor: '#e5080c'}}
+                  >
+                    Set View Limit
+                  </button>
+                  <button
+                    onClick={() => setShowViewLimitModal(false)}
+                    className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Post Detail Modal */}
         {selectedPost && (
@@ -327,6 +526,18 @@ export default function PostsPage() {
                     <div><span className="text-gray-600">District:</span> <span className="font-medium">{selectedPost.district}</span></div>
                     <div><span className="text-gray-600">Status:</span> <span className="font-medium">{selectedPost.status}</span></div>
                     <div><span className="text-gray-600">Created:</span> <span className="font-medium">{selectedPost.createdAt}</span></div>
+                    {selectedPost.viewDuration && (
+                      <div><span className="text-gray-600">Duration:</span> <span className="font-medium">{selectedPost.viewDuration} days</span></div>
+                    )}
+                    {selectedPost.expiresAt && (
+                      <div><span className="text-gray-600">Expires:</span> <span className="font-medium">{selectedPost.expiresAt}</span></div>
+                    )}
+                    {selectedPost.viewLimit && (
+                      <div><span className="text-gray-600">View Limit:</span> <span className="font-medium">{selectedPost.viewLimit.toLocaleString()} views</span></div>
+                    )}
+                    {selectedPost.currentViews !== undefined && (
+                      <div><span className="text-gray-600">Current Views:</span> <span className="font-medium">{selectedPost.currentViews.toLocaleString()}</span></div>
+                    )}
                   </div>
                   <div className="mt-3">
                     <span className="text-gray-600">Hashtags:</span>
