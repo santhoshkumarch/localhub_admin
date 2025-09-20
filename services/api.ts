@@ -24,9 +24,11 @@ class ApiService {
   }
 
   async login(email: string, password: string) {
+    const crypto = require('crypto');
+    const hashedPassword = crypto.createHash('md5').update(password).digest('hex');
     return this.request('/auth/login', {
       method: 'POST',
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password: hashedPassword }),
     });
   }
 
