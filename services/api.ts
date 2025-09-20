@@ -1,5 +1,5 @@
 const API_BASE_URL = process.env.NODE_ENV == 'production' 
-  ? 'https://localhub_backend.railway.internal/api'
+  ? 'https://localhubbackend-production.up.railway.app/api'
   : 'http://localhost:5000/api';
 
 class ApiService {
