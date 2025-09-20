@@ -1,5 +1,5 @@
 const API_BASE_URL = typeof window !== 'undefined' && window.location.hostname !== 'localhost'
-  ? 'https://localhub-backend-production.up.railway.app/api'
+  ? 'https://localhub_backend.railway.internal/api'
   : 'http://localhost:5000/api';
 
 class ApiService {
