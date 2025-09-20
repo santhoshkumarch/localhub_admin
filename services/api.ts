@@ -1,10 +1,6 @@
-// const API_BASE_URL = process.env.NODE_ENV === 'production' 
-//   ? 'https://localhub-backend-production.up.railway.app/api'
-//   : 'http://localhost:5000/api';
-
-const API_BASE_URL = 'https://localhub-backend-production.up.railway.app/api';
-
-// const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = typeof window !== 'undefined' && window.location.hostname !== 'localhost'
+  ? 'https://localhub-backend-production.up.railway.app/api'
+  : 'http://localhost:5000/api';
 
 class ApiService {
   private getAuthHeaders(): Record<string, string> {
