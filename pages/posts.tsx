@@ -20,13 +20,15 @@ interface Post {
   expiresAt?: string;
   viewLimit?: number;
   currentViews?: number;
+  assignedLabel?: string;
+  menuId?: number;
 }
 
 export default function PostsPage() {
   const [posts, setPosts] = useState<Post[]>([
-    { id: 1, title: 'New South Indian Restaurant Opens in Chennai', content: 'Authentic Tamil cuisine now available at our new location in T. Nagar. Special opening offers for the first 100 customers!', author: 'Muthu Restaurant', authorType: 'business', category: 'Restaurant', hashtags: ['food', 'restaurant', 'tamil', 'chennai'], likes: 45, comments: 12, shares: 8, status: 'published', createdAt: '2024-01-20', updatedAt: '2024-01-20' },
-    { id: 2, title: 'Fresh Vegetables Available Daily', content: 'Farm fresh vegetables delivered daily to your doorstep. Organic produce from local farmers. Call now for home delivery!', author: 'Green Mart', authorType: 'business', category: 'Grocery', hashtags: ['vegetables', 'organic', 'delivery'], likes: 32, comments: 7, shares: 15, status: 'published', createdAt: '2024-01-19', updatedAt: '2024-01-19' },
-    { id: 3, title: 'Mobile Repair Service - Quick & Reliable', content: 'Professional mobile repair services for all brands. Screen replacement, battery change, software issues - we fix it all!', author: 'Tech Solutions', authorType: 'business', category: 'Electronics', hashtags: ['mobile', 'repair', 'service'], likes: 28, comments: 5, shares: 6, status: 'published', createdAt: '2024-01-18', updatedAt: '2024-01-18' },
+    { id: 1, title: 'We are hiring Full-time Sales Executive', content: 'Looking for experienced sales professional for full-time position with competitive salary and benefits.', author: 'Tech Corp', authorType: 'business', category: 'Jobs', hashtags: ['hiring', 'sales', 'fulltime'], likes: 45, comments: 12, shares: 8, status: 'published', createdAt: '2024-01-20', updatedAt: '2024-01-20', assignedLabel: 'Full-time Job', menuId: 1 },
+    { id: 2, title: 'Part-time Delivery Boy needed', content: 'Join our delivery team for part-time work. Flexible hours and good pay. Perfect for students.', author: 'QuickDelivery', authorType: 'business', category: 'Jobs', hashtags: ['delivery', 'parttime', 'flexible'], likes: 32, comments: 7, shares: 15, status: 'published', createdAt: '2024-01-19', updatedAt: '2024-01-19', assignedLabel: 'Part-time Job', menuId: 1 },
+    { id: 3, title: 'Summer Internship opportunity', content: 'Internship program for computer science students. Learn real-world development skills with mentorship.', author: 'StartupHub', authorType: 'business', category: 'Jobs', hashtags: ['internship', 'students', 'development'], likes: 28, comments: 5, shares: 6, status: 'published', createdAt: '2024-01-18', updatedAt: '2024-01-18', assignedLabel: 'Internship', menuId: 1 },
     { id: 4, title: 'Premium Silk Sarees Collection', content: 'New collection of Kanchipuram silk sarees arrived! Traditional designs with modern patterns. Visit our showroom for exclusive offers.', author: 'Priya Textiles', authorType: 'business', category: 'Textiles', hashtags: ['sarees', 'silk', 'traditional'], likes: 67, comments: 18, shares: 23, status: 'published', createdAt: '2024-01-17', updatedAt: '2024-01-17' },
     { id: 5, title: 'Professional Catering Services', content: 'Royal Caterers provides professional catering for weddings, corporate events, and parties. Authentic South Indian cuisine with modern presentation.', author: 'Royal Caterers', authorType: 'business', category: 'Restaurant', hashtags: ['catering', 'wedding', 'events'], likes: 41, comments: 9, shares: 12, status: 'published', createdAt: '2024-01-16', updatedAt: '2024-01-16' },
     { id: 6, title: 'Electronics Sale - Up to 50% Off', content: 'Mega electronics sale at Kumar Electronics! Smartphones, laptops, home appliances - everything at discounted prices. Limited time offer!', author: 'Kumar Electronics', authorType: 'business', category: 'Electronics', hashtags: ['electronics', 'sale', 'discount'], likes: 89, comments: 25, shares: 34, status: 'published', createdAt: '2024-01-15', updatedAt: '2024-01-15' },
@@ -57,8 +59,19 @@ export default function PostsPage() {
   const [showViewLimitModal, setShowViewLimitModal] = useState(false);
   const [viewLimitPost, setViewLimitPost] = useState<Post | null>(null);
   const [viewLimit, setViewLimit] = useState(100);
+  const [showLabelModal, setShowLabelModal] = useState(false);
+  const [labelPost, setLabelPost] = useState<Post | null>(null);
+  const [selectedMenu, setSelectedMenu] = useState<number | null>(null);
+  const [selectedLabel, setSelectedLabel] = useState<string>('');
 
-  const categories = ['Restaurant', 'Electronics', 'Textiles', 'Grocery', 'Auto Repair', 'Fashion', 'Beauty & Wellness', 'Healthcare', 'Hardware', 'Jewellery', 'Food & Dining'];
+  const categories = ['Jobs', 'Offers', 'Events', 'Services', 'Restaurant', 'Electronics', 'Textiles', 'Grocery', 'Auto Repair', 'Fashion', 'Beauty & Wellness', 'Healthcare', 'Hardware', 'Jewellery', 'Food & Dining'];
+  
+  const menus = [
+    { id: 1, name: 'Jobs', labels: ['Career', 'Vacancy', 'Full-time Job', 'Part-time Job', 'Internship'] },
+    { id: 2, name: 'Offers', labels: ['Discounts', 'Coupons', 'Sale', 'Special Offer'] },
+    { id: 3, name: 'Events', labels: ['Workshop', 'Seminar', 'Conference', 'Networking'] },
+    { id: 4, name: 'Services', labels: ['Repair', 'Maintenance', 'Consultation'] }
+  ];
 
 
   const filteredPosts = posts.filter(post => {
@@ -121,6 +134,27 @@ export default function PostsPage() {
     }
     setShowViewLimitModal(false);
     setViewLimitPost(null);
+  };
+
+  const handleAssignLabel = (post: Post) => {
+    setLabelPost(post);
+    setSelectedMenu(post.menuId || null);
+    setSelectedLabel(post.assignedLabel || '');
+    setShowLabelModal(true);
+  };
+
+  const handleSaveLabel = () => {
+    if (labelPost && selectedMenu && selectedLabel) {
+      setPosts(posts.map(post =>
+        post.id === labelPost.id 
+          ? { ...post, menuId: selectedMenu, assignedLabel: selectedLabel }
+          : post
+      ));
+    }
+    setShowLabelModal(false);
+    setLabelPost(null);
+    setSelectedMenu(null);
+    setSelectedLabel('');
   };
 
   const getDaysRemaining = (expiresAt?: string) => {
@@ -318,6 +352,12 @@ export default function PostsPage() {
                   >
                     Set View Limit
                   </button>
+                  <button
+                    onClick={() => handleAssignLabel(post)}
+                    className="bg-purple-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-purple-700 transition-colors"
+                  >
+                    Assign Label
+                  </button>
                   <select
                     value={post.status}
                     onChange={(e) => handleStatusChange(post.id, e.target.value as any)}
@@ -344,6 +384,13 @@ export default function PostsPage() {
                     <div className="text-xs text-gray-500">
                       <span className={(post.currentViews || 0) >= post.viewLimit ? 'text-red-600' : 'text-gray-600'}>
                         {post.currentViews || 0}/{post.viewLimit} views
+                      </span>
+                    </div>
+                  )}
+                  {post.assignedLabel && (
+                    <div className="text-xs">
+                      <span className="px-2 py-1 text-white rounded-full" style={{backgroundColor: '#e5080c'}}>
+                        {post.assignedLabel}
                       </span>
                     </div>
                   )}
@@ -397,6 +444,76 @@ export default function PostsPage() {
                   </button>
                   <button
                     onClick={() => setShowDurationModal(false)}
+                    className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Label Assignment Modal */}
+        {showLabelModal && labelPost && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full">
+              <div className="text-white p-6 rounded-t-2xl" style={{background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)'}}>
+                <h2 className="text-xl font-bold">Assign Label</h2>
+                <p className="text-red-100 text-sm">{labelPost.title}</p>
+              </div>
+              
+              <div className="p-6">
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Select Menu
+                  </label>
+                  <select
+                    value={selectedMenu || ''}
+                    onChange={(e) => {
+                      setSelectedMenu(parseInt(e.target.value));
+                      setSelectedLabel('');
+                    }}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent"
+                    style={{'--tw-ring-color': '#e5080c'} as any}
+                  >
+                    <option value="">Select a menu...</option>
+                    {menus.map((menu) => (
+                      <option key={menu.id} value={menu.id}>{menu.name}</option>
+                    ))}
+                  </select>
+                </div>
+                
+                {selectedMenu && (
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Select Label
+                    </label>
+                    <select
+                      value={selectedLabel}
+                      onChange={(e) => setSelectedLabel(e.target.value)}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent"
+                      style={{'--tw-ring-color': '#e5080c'} as any}
+                    >
+                      <option value="">Select a label...</option>
+                      {menus.find(m => m.id === selectedMenu)?.labels.map((label) => (
+                        <option key={label} value={label}>{label}</option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+                
+                <div className="flex space-x-3">
+                  <button
+                    onClick={handleSaveLabel}
+                    disabled={!selectedMenu || !selectedLabel}
+                    className="flex-1 text-white px-4 py-2 rounded-lg transition-colors hover:opacity-90 disabled:opacity-50"
+                    style={{backgroundColor: '#e5080c'}}
+                  >
+                    Assign Label
+                  </button>
+                  <button
+                    onClick={() => setShowLabelModal(false)}
                     className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors"
                   >
                     Cancel
@@ -520,6 +637,12 @@ export default function PostsPage() {
                     )}
                     {selectedPost.currentViews !== undefined && (
                       <div><span className="text-gray-600">Current Views:</span> <span className="font-medium">{selectedPost.currentViews.toLocaleString()}</span></div>
+                    )}
+                    {selectedPost.assignedLabel && (
+                      <div><span className="text-gray-600">Assigned Label:</span> <span className="font-medium">{selectedPost.assignedLabel}</span></div>
+                    )}
+                    {selectedPost.menuId && (
+                      <div><span className="text-gray-600">Menu:</span> <span className="font-medium">{menus.find(m => m.id === selectedPost.menuId)?.name}</span></div>
                     )}
                   </div>
                   <div className="mt-3">
