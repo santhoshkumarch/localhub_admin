@@ -100,8 +100,8 @@ export default function BusinessesPage() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
             <div className="flex items-center">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center" style={{backgroundColor: '#fef2f2'}}>
+                <svg className="w-6 h-6" style={{color: '#e5080c'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
               </div>
@@ -170,13 +170,13 @@ export default function BusinessesPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Label</label>
               <select
                 value={filterCategory}
                 onChange={(e) => setFilterCategory(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
-                <option value="all">All Categories</option>
+                <option value="all">All Label</option>
                 {categories.map(category => (
                   <option key={category} value={category}>{category}</option>
                 ))}
@@ -217,7 +217,7 @@ export default function BusinessesPage() {
                     {business.status}
                   </span>
                   {business.isVerified && (
-                    <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">
+                    <span className="px-2 py-1 text-xs font-medium text-white rounded-full" style={{backgroundColor: '#e5080c'}}>
                       Verified
                     </span>
                   )}
@@ -258,7 +258,8 @@ export default function BusinessesPage() {
               <div className="flex space-x-2">
                 <button
                   onClick={() => setSelectedBusiness(business)}
-                  className="flex-1 bg-blue-600 text-white px-3 py-2 rounded-lg text-sm hover:bg-blue-700 transition-colors"
+                  className="flex-1 text-white px-3 py-2 rounded-lg text-sm transition-colors hover:opacity-90"
+                  style={{backgroundColor: '#e5080c'}}
                 >
                   View Details
                 </button>
@@ -280,11 +281,11 @@ export default function BusinessesPage() {
         {selectedBusiness && (
           <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
             <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-              <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 rounded-t-2xl">
+              <div className="text-white p-6 rounded-t-2xl" style={{background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)'}}>
                 <div className="flex items-center justify-between">
                   <div>
                     <h2 className="text-2xl font-bold">{selectedBusiness.name}</h2>
-                    <p className="text-blue-100">{selectedBusiness.category}</p>
+                    <p className="text-red-100">{selectedBusiness.category}</p>
                   </div>
                   <button
                     onClick={() => setSelectedBusiness(null)}
@@ -299,9 +300,9 @@ export default function BusinessesPage() {
 
               <div className="p-6 space-y-6">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="bg-blue-50 rounded-lg p-4 text-center">
-                    <div className="text-2xl font-bold text-blue-600">{selectedBusiness.rating}</div>
-                    <div className="text-sm text-blue-800">Rating</div>
+                  <div className="rounded-lg p-4 text-center" style={{backgroundColor: '#fef2f2'}}>
+                    <div className="text-2xl font-bold" style={{color: '#e5080c'}}>{selectedBusiness.rating}</div>
+                    <div className="text-sm" style={{color: '#c0392b'}}>Rating</div>
                   </div>
                   <div className="bg-purple-50 rounded-lg p-4 text-center">
                     <div className="text-2xl font-bold text-purple-600">{selectedBusiness.reviewCount}</div>
@@ -327,7 +328,7 @@ export default function BusinessesPage() {
                     <div><span className="text-gray-600">Description:</span> <span className="font-medium">{selectedBusiness.description}</span></div>
                     <div><span className="text-gray-600">Registered:</span> <span className="font-medium">{selectedBusiness.registeredDate}</span></div>
                     {selectedBusiness.website && (
-                      <div><span className="text-gray-600">Website:</span> <span className="font-medium text-blue-600">{selectedBusiness.website}</span></div>
+                      <div><span className="text-gray-600">Website:</span> <span className="font-medium" style={{color: '#e5080c'}}>{selectedBusiness.website}</span></div>
                     )}
                   </div>
                 </div>

@@ -119,7 +119,8 @@ export default function MenusPage() {
             </div>
             <button
               onClick={() => setShowCreateForm(true)}
-              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-200 flex items-center space-x-2"
+              className="text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center space-x-2 hover:opacity-90"
+              style={{background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)'}}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -168,9 +169,10 @@ export default function MenusPage() {
                       onClick={() => setNewMenu({...newMenu, icon})}
                       className={`w-12 h-12 text-2xl rounded-lg border-2 transition-all duration-200 ${
                         newMenu.icon === icon
-                          ? 'border-blue-500 bg-blue-50'
+                          ? 'bg-red-50'
                           : 'border-gray-200 hover:border-gray-300'
                       }`}
+                      style={newMenu.icon === icon ? {borderColor: '#e5080c'} : {}}
                     >
                       {icon}
                     </button>
@@ -201,9 +203,10 @@ export default function MenusPage() {
                       onClick={() => toggleLabel(label)}
                       className={`px-3 py-1 rounded-full text-sm font-medium border transition-all duration-200 ${
                         newMenu.labels.includes(label)
-                          ? 'bg-blue-100 text-blue-800 border-blue-200'
+                          ? 'text-white border-red-200'
                           : 'bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200'
                       }`}
+                      style={newMenu.labels.includes(label) ? {backgroundColor: '#e5080c'} : {}}
                     >
                       {label}
                     </button>
@@ -215,7 +218,8 @@ export default function MenusPage() {
                 <button
                   type="submit"
                   disabled={isCreating || !newMenu.name || !newMenu.icon || newMenu.labels.length === 0}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 disabled:opacity-50"
+                  className="text-white px-6 py-2 rounded-lg transition-all duration-200 disabled:opacity-50 hover:opacity-90"
+                  style={{background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)'}}
                 >
                   {isCreating ? 'Creating...' : 'Create Menu'}
                 </button>
@@ -270,7 +274,7 @@ export default function MenusPage() {
                   <div className="mt-3">
                     <div className="flex flex-wrap gap-1">
                       {menu.labels.map((label) => (
-                        <span key={label} className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
+                        <span key={label} className="px-2 py-1 text-white text-xs rounded-full" style={{backgroundColor: '#e5080c'}}>
                           {label}
                         </span>
                       ))}
@@ -347,7 +351,7 @@ export default function MenusPage() {
                         <div className="mt-3">
                           <div className="flex flex-wrap gap-1">
                             {post.labels.map((label) => (
-                              <span key={label} className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
+                              <span key={label} className="px-2 py-1 text-white text-xs rounded-full" style={{backgroundColor: '#e5080c'}}>
                                 {label}
                               </span>
                             ))}

@@ -139,7 +139,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Top Districts */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+          {/* <div className="bg-white rounded-xl shadow-sm border border-gray-200">
             <div className="p-6 border-b border-gray-200">
               <h2 className="text-xl font-semibold text-gray-900">Top Districts</h2>
             </div>
@@ -171,7 +171,7 @@ export default function DashboardPage() {
                 ))}
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </Layout>

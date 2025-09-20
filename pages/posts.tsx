@@ -88,8 +88,8 @@ export default function PostsPage() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
             <div className="flex items-center">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center" style={{backgroundColor: '#fef2f2'}}>
+                <svg className="w-6 h-6" style={{color: '#e5080c'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
                 </svg>
               </div>
@@ -172,13 +172,13 @@ export default function PostsPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Label</label>
               <select
                 value={filterCategory}
                 onChange={(e) => setFilterCategory(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
-                <option value="all">All Categories</option>
+                <option value="all">All Labels</option>
                 {categories.map(category => (
                   <option key={category} value={category}>{category}</option>
                 ))}
@@ -217,8 +217,8 @@ export default function PostsPage() {
                       {post.status}
                     </span>
                     <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                      post.authorType === 'business' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'
-                    }`}>
+                      post.authorType === 'business' ? 'text-white' : 'bg-purple-100 text-purple-800'
+                    }`} style={post.authorType === 'business' ? {backgroundColor: '#e5080c'} : {}}>
                       {post.authorType}
                     </span>
                   </div>
@@ -260,7 +260,8 @@ export default function PostsPage() {
                 <div className="flex flex-col space-y-2">
                   <button
                     onClick={() => setSelectedPost(post)}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition-colors"
+                    className="text-white px-4 py-2 rounded-lg text-sm transition-colors hover:opacity-90"
+                    style={{backgroundColor: '#e5080c'}}
                   >
                     View Details
                   </button>
@@ -283,11 +284,11 @@ export default function PostsPage() {
         {selectedPost && (
           <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
             <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-              <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 rounded-t-2xl">
+              <div className="text-white p-6 rounded-t-2xl" style={{background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)'}}>
                 <div className="flex items-center justify-between">
                   <div>
                     <h2 className="text-2xl font-bold">{selectedPost.title}</h2>
-                    <p className="text-blue-100">By {selectedPost.author} • {selectedPost.district}</p>
+                    <p className="text-red-100">By {selectedPost.author} • {selectedPost.district}</p>
                   </div>
                   <button
                     onClick={() => setSelectedPost(null)}
@@ -302,9 +303,9 @@ export default function PostsPage() {
 
               <div className="p-6 space-y-6">
                 <div className="grid grid-cols-3 gap-4">
-                  <div className="bg-blue-50 rounded-lg p-4 text-center">
-                    <div className="text-2xl font-bold text-blue-600">{selectedPost.likes}</div>
-                    <div className="text-sm text-blue-800">Likes</div>
+                  <div className="rounded-lg p-4 text-center" style={{backgroundColor: '#fef2f2'}}>
+                    <div className="text-2xl font-bold" style={{color: '#e5080c'}}>{selectedPost.likes}</div>
+                    <div className="text-sm" style={{color: '#c0392b'}}>Likes</div>
                   </div>
                   <div className="bg-purple-50 rounded-lg p-4 text-center">
                     <div className="text-2xl font-bold text-purple-600">{selectedPost.comments}</div>
@@ -331,7 +332,7 @@ export default function PostsPage() {
                     <span className="text-gray-600">Hashtags:</span>
                     <div className="flex flex-wrap gap-2 mt-1">
                       {selectedPost.hashtags.map((hashtag) => (
-                        <span key={hashtag} className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
+                        <span key={hashtag} className="px-2 py-1 text-white text-xs rounded-full" style={{backgroundColor: '#e5080c'}}>
                           #{hashtag}
                         </span>
                       ))}

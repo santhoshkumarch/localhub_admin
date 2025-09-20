@@ -39,8 +39,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             
             <div className="flex items-center space-x-3">
               <div className="relative">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg transform hover:scale-105 transition-all duration-300">
-                  <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-red-500 rounded-lg flex items-center justify-center">
+                <div className="w-10 h-10 bg-gradient-to-br from-red-600 via-red-500 to-red-400 rounded-xl flex items-center justify-center shadow-lg transform hover:scale-105 transition-all duration-300" style={{background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)'}}>
+                  <div className="w-8 h-8 bg-gradient-to-br from-red-700 to-red-600 rounded-lg flex items-center justify-center" style={{background: 'linear-gradient(135deg, #c0392b 0%, #e5080c 100%)'}}>
                     <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
                     </svg>
@@ -49,7 +49,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white animate-pulse"></div>
               </div>
               <div className="hidden sm:block">
-                <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                <h1 className="text-xl font-bold text-transparent bg-clip-text" style={{backgroundImage: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)'}}>
                   My Group
                 </h1>
                 <p className="text-xs text-gray-500 font-medium tracking-wide">ADMIN PANEL</p>
@@ -63,7 +63,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               onClick={() => setIsProfileOpen(!isProfileOpen)}
               className="flex items-center space-x-2 lg:space-x-3 p-2 rounded-lg hover:bg-gray-100 hover:shadow-md transition-all duration-300 transform hover:scale-105 active:scale-95"
             >
-              <div className="w-8 h-8 bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)'}}>
                 <span className="text-white font-medium text-sm">
                   {user?.name?.split(' ').map(n => n[0]).join('').toUpperCase() || 'U'}
                 </span>
@@ -117,7 +117,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border border-white animate-pulse"></div>
                 </div>
                 <div>
-                  <span className="text-lg font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">My Group</span>
+                  <span className="text-lg font-bold text-transparent bg-clip-text" style={{backgroundImage: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)'}}>My Group</span>
                   <p className="text-xs text-gray-500 font-medium">ADMIN PANEL</p>
                 </div>
               </div>
@@ -147,7 +147,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <nav className="p-4">
             <ul className="space-y-2">
               <li>
-                <Link href="/dashboard" className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:translate-x-1 ${isActive('/dashboard') ? 'bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 border-r-4 border-blue-600 shadow-md' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:shadow-sm'}`}>
+                <Link href="/dashboard" className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:translate-x-1 ${isActive('/dashboard') ? 'text-white border-r-4 shadow-md' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:shadow-sm'}`} style={isActive('/dashboard') ? {background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)', borderRightColor: '#c0392b'} : {}}>
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2V7" />
                   </svg>
@@ -155,7 +155,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </Link>
               </li>
               <li>
-                <Link href="/users" className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:translate-x-1 ${isActive('/users') ? 'bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 border-r-4 border-blue-600 shadow-md' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:shadow-sm'}`}>
+                <Link href="/users" className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:translate-x-1 ${isActive('/users') ? 'text-white border-r-4 shadow-md' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:shadow-sm'}`} style={isActive('/users') ? {background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)', borderRightColor: '#c0392b'} : {}}>
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
                   </svg>
@@ -163,7 +163,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </Link>
               </li>
               <li>
-                <Link href="/businesses" className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:translate-x-1 ${isActive('/businesses') ? 'bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 border-r-4 border-blue-600 shadow-md' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:shadow-sm'}`}>
+                <Link href="/businesses" className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:translate-x-1 ${isActive('/businesses') ? 'text-white border-r-4 shadow-md' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:shadow-sm'}`} style={isActive('/businesses') ? {background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)', borderRightColor: '#c0392b'} : {}}>
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                   </svg>
@@ -171,7 +171,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </Link>
               </li>
               <li>
-                <Link href="/posts" className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:translate-x-1 ${isActive('/posts') ? 'bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 border-r-4 border-blue-600 shadow-md' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:shadow-sm'}`}>
+                <Link href="/posts" className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:translate-x-1 ${isActive('/posts') ? 'text-white border-r-4 shadow-md' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:shadow-sm'}`} style={isActive('/posts') ? {background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)', borderRightColor: '#c0392b'} : {}}>
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
                   </svg>
@@ -188,7 +188,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </Link>
               </li> */}
               <li>
-                <Link href="/hashtags" className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:translate-x-1 ${isActive('/hashtags') ? 'bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 border-r-4 border-blue-600 shadow-md' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:shadow-sm'}`}>
+                <Link href="/hashtags" className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:translate-x-1 ${isActive('/hashtags') ? 'text-white border-r-4 shadow-md' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:shadow-sm'}`} style={isActive('/hashtags') ? {background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)', borderRightColor: '#c0392b'} : {}}>
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
                   </svg>
@@ -196,7 +196,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </Link>
               </li>
               <li>
-                <Link href="/menus" className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:translate-x-1 ${isActive('/menus') ? 'bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 border-r-4 border-blue-600 shadow-md' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:shadow-sm'}`}>
+                <Link href="/menus" className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:translate-x-1 ${isActive('/menus') ? 'text-white border-r-4 shadow-md' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:shadow-sm'}`} style={isActive('/menus') ? {background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)', borderRightColor: '#c0392b'} : {}}>
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" />
                   </svg>
@@ -204,7 +204,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </Link>
               </li>
               <li>
-                <Link href="/settings" className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:translate-x-1 ${isActive('/settings') ? 'bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 border-r-4 border-blue-600 shadow-md' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:shadow-sm'}`}>
+                <Link href="/settings" className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:translate-x-1 ${isActive('/settings') ? 'text-white border-r-4 shadow-md' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:shadow-sm'}`} style={isActive('/settings') ? {background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)', borderRightColor: '#c0392b'} : {}}>
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
