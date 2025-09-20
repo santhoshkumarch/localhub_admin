@@ -29,12 +29,12 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-red-100 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
           {/* Logo/Brand */}
           <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl mx-auto mb-4 flex items-center justify-center">
+            <div className="w-16 h-16 rounded-xl mx-auto mb-4 flex items-center justify-center" style={{background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)'}}>
               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
@@ -49,7 +49,8 @@ export default function LoginPage() {
               <input 
                 value={email} 
                 onChange={e => setEmail(e.target.value)} 
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white" 
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white" 
+                style={{'--tw-ring-color': '#e5080c'} as any}
                 type="email" 
                 placeholder="admin@example.com"
                 required
@@ -61,7 +62,8 @@ export default function LoginPage() {
               <input 
                 value={password} 
                 onChange={e => setPassword(e.target.value)} 
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white" 
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-all duration-200 bg-gray-50 focus:bg-white" 
+                style={{'--tw-ring-color': '#e5080c'} as any}
                 type="password" 
                 placeholder="••••••••"
                 required
@@ -71,7 +73,8 @@ export default function LoginPage() {
             <button 
               type="submit" 
               disabled={isLoading}
-              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-4 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 focus:ring-4 focus:ring-blue-200 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+              className="w-full text-white py-3 px-4 rounded-lg font-medium focus:ring-4 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center hover:opacity-90"
+              style={{background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)', '--tw-ring-color': '#fef2f2'} as any}
             >
               {isLoading ? (
                 <>

@@ -85,8 +85,8 @@ export default function UsersPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6">
             <div className="flex items-center">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <svg className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center" style={{backgroundColor: '#fef2f2'}}>
+                <svg className="w-5 h-5 sm:w-6 sm:h-6" style={{color: '#e5080c'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
                 </svg>
               </div>
@@ -196,7 +196,7 @@ export default function UsersPage() {
             </div>
 
             <div className="flex items-end sm:col-span-2 lg:col-span-1">
-              <button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 text-sm sm:text-base">
+              <button className="w-full text-white px-4 py-2 rounded-lg transition-all duration-200 text-sm sm:text-base hover:opacity-90" style={{background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)'}}>
                 <span className="hidden sm:inline">Export Users</span>
                 <span className="sm:hidden">Export</span>
               </button>
@@ -227,7 +227,7 @@ export default function UsersPage() {
                   <tr key={user.id} className="hover:bg-gray-50">
                     <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
-                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-medium text-xs sm:text-sm">
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white font-medium text-xs sm:text-sm" style={{background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)'}}>
                           {user.avatar}
                         </div>
                         <div className="ml-2 sm:ml-4 min-w-0 flex-1">
@@ -242,8 +242,8 @@ export default function UsersPage() {
                     </td>
                     <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
                       <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                        user.userType === 'business' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
-                      }`}>
+                        user.userType === 'business' ? 'text-white' : 'bg-green-100 text-green-800'
+                      }`} style={user.userType === 'business' ? {backgroundColor: '#e5080c'} : {}}>
                         {user.userType === 'business' ? 'Business' : 'Individual'}
                       </span>
                     </td>
@@ -257,7 +257,7 @@ export default function UsersPage() {
                           {user.isActive ? 'Active' : 'Inactive'}
                         </span>
                         {user.isVerified && (
-                          <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">
+                          <span className="px-2 py-1 text-xs font-medium text-white rounded-full" style={{backgroundColor: '#e5080c'}}>
                             Verified
                           </span>
                         )}
@@ -267,7 +267,8 @@ export default function UsersPage() {
                       <div className="flex flex-col sm:flex-row space-y-1 sm:space-y-0 sm:space-x-2">
                         <button 
                           onClick={() => { setSelectedUser(user); setModalType('view'); }}
-                          className="text-blue-600 hover:text-blue-900 text-left"
+                          className="text-left hover:opacity-80"
+                          style={{color: '#e5080c'}}
                         >
                           View
                         </button>
@@ -296,7 +297,7 @@ export default function UsersPage() {
         {modalType === 'view' && selectedUser && (
           <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
             <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-              <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 rounded-t-2xl">
+              <div className="text-white p-6 rounded-t-2xl" style={{background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)'}}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
                     <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center text-2xl font-bold">
@@ -304,7 +305,7 @@ export default function UsersPage() {
                     </div>
                     <div>
                       <h2 className="text-2xl font-bold">{selectedUser.name}</h2>
-                      <p className="text-blue-100">{selectedUser.email}</p>
+                      <p className="text-red-100">{selectedUser.email}</p>
                     </div>
                   </div>
                   <button
@@ -320,9 +321,9 @@ export default function UsersPage() {
 
               <div className="p-6 space-y-6">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="bg-blue-50 rounded-lg p-4 text-center">
-                    <div className="text-2xl font-bold text-blue-600">{selectedUser.businessCount}</div>
-                    <div className="text-sm text-blue-800">Businesses</div>
+                  <div className="rounded-lg p-4 text-center" style={{backgroundColor: '#fef2f2'}}>
+                    <div className="text-2xl font-bold" style={{color: '#e5080c'}}>{selectedUser.businessCount}</div>
+                    <div className="text-sm" style={{color: '#c0392b'}}>Businesses</div>
                   </div>
                   <div className="bg-purple-50 rounded-lg p-4 text-center">
                     <div className="text-2xl font-bold text-purple-600">{selectedUser.postsCount}</div>
@@ -346,8 +347,8 @@ export default function UsersPage() {
                     <div><span className="text-gray-600">Joined:</span> <span className="font-medium">{selectedUser.joinedDate}</span></div>
                     <div><span className="text-gray-600">Last Active:</span> <span className="font-medium">{selectedUser.lastActive}</span></div>
                     <div><span className="text-gray-600">User Type:</span> <span className={`font-medium ${
-                      selectedUser.userType === 'business' ? 'text-blue-600' : 'text-green-600'
-                    }`}>{selectedUser.userType === 'business' ? 'Business User' : 'Individual User'}</span></div>
+                      selectedUser.userType === 'business' ? '' : 'text-green-600'
+                    }`} style={selectedUser.userType === 'business' ? {color: '#e5080c'} : {}}>{selectedUser.userType === 'business' ? 'Business User' : 'Individual User'}</span></div>
                   </div>
                 </div>
 
@@ -410,7 +411,7 @@ export default function UsersPage() {
         {modalType === 'edit' && selectedUser && (
           <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
             <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-              <div className="bg-gradient-to-r from-green-600 to-blue-600 text-white p-6 rounded-t-2xl">
+              <div className="text-white p-6 rounded-t-2xl" style={{background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)'}}>
                 <div className="flex items-center justify-between">
                   <h2 className="text-2xl font-bold">Edit User</h2>
                   <button
@@ -492,7 +493,8 @@ export default function UsersPage() {
                   <div className="flex space-x-4 pt-4">
                     <button
                       type="submit"
-                      className="bg-gradient-to-r from-green-600 to-blue-600 text-white px-6 py-2 rounded-lg hover:from-green-700 hover:to-blue-700 transition-all duration-200"
+                      className="text-white px-6 py-2 rounded-lg transition-all duration-200 hover:opacity-90"
+                      style={{background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)'}}
                     >
                       Save Changes
                     </button>

@@ -91,9 +91,10 @@ export default function SettingsPage() {
                       onClick={() => setActiveTab(tab.id)}
                       className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${
                         activeTab === tab.id
-                          ? 'bg-blue-50 text-blue-700 border-r-4 border-blue-600'
+                          ? 'text-white border-r-4'
                           : 'text-gray-700 hover:bg-gray-100'
                       }`}
+                      style={activeTab === tab.id ? {background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)', borderRightColor: '#c0392b'} : {}}
                     >
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={tab.icon} />
@@ -121,7 +122,8 @@ export default function SettingsPage() {
                           type="text"
                           value={settings.general.siteName}
                           onChange={(e) => updateSetting('general', 'siteName', e.target.value)}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent"
+                          style={{'--tw-ring-color': '#e5080c'} as any}
                         />
                       </div>
                       <div>
@@ -130,7 +132,8 @@ export default function SettingsPage() {
                           type="email"
                           value={settings.general.contactEmail}
                           onChange={(e) => updateSetting('general', 'contactEmail', e.target.value)}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent"
+                          style={{'--tw-ring-color': '#e5080c'} as any}
                         />
                       </div>
                     </div>
@@ -140,7 +143,8 @@ export default function SettingsPage() {
                         value={settings.general.siteDescription}
                         onChange={(e) => updateSetting('general', 'siteDescription', e.target.value)}
                         rows={3}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent"
+                        style={{'--tw-ring-color': '#e5080c'} as any}
                       />
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -150,7 +154,8 @@ export default function SettingsPage() {
                           type="text"
                           value={settings.general.supportPhone}
                           onChange={(e) => updateSetting('general', 'supportPhone', e.target.value)}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent"
+                          style={{'--tw-ring-color': '#e5080c'} as any}
                         />
                       </div>
                       <div>
@@ -158,7 +163,8 @@ export default function SettingsPage() {
                         <select
                           value={settings.general.timezone}
                           onChange={(e) => updateSetting('general', 'timezone', e.target.value)}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent"
+                          style={{'--tw-ring-color': '#e5080c'} as any}
                         >
                           <option value="Asia/Kolkata">Asia/Kolkata (IST)</option>
                           <option value="UTC">UTC</option>
@@ -187,7 +193,7 @@ export default function SettingsPage() {
                             onChange={(e) => updateSetting('platform', 'userRegistration', e.target.checked)}
                             className="sr-only peer"
                           />
-                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all" style={{'--tw-ring-color': '#fef2f2', backgroundColor: settings.platform.userRegistration ? '#e5080c' : ''} as any}></div>
                         </label>
                       </div>
 
@@ -203,7 +209,7 @@ export default function SettingsPage() {
                             onChange={(e) => updateSetting('platform', 'businessRegistration', e.target.checked)}
                             className="sr-only peer"
                           />
-                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all" style={{'--tw-ring-color': '#fef2f2', backgroundColor: settings.platform.businessRegistration ? '#e5080c' : ''} as any}></div>
                         </label>
                       </div>
 
@@ -219,7 +225,7 @@ export default function SettingsPage() {
                             onChange={(e) => updateSetting('platform', 'postModeration', e.target.checked)}
                             className="sr-only peer"
                           />
-                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all" style={{'--tw-ring-color': '#fef2f2', backgroundColor: settings.platform.postModeration ? '#e5080c' : ''} as any}></div>
                         </label>
                       </div>
 
@@ -235,7 +241,7 @@ export default function SettingsPage() {
                             onChange={(e) => updateSetting('platform', 'autoApproveBusinesses', e.target.checked)}
                             className="sr-only peer"
                           />
-                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all" style={{'--tw-ring-color': '#fef2f2', backgroundColor: settings.platform.autoApproveBusinesses ? '#e5080c' : ''} as any}></div>
                         </label>
                       </div>
                     </div>
@@ -261,7 +267,7 @@ export default function SettingsPage() {
                             onChange={(e) => updateSetting('notifications', 'emailNotifications', e.target.checked)}
                             className="sr-only peer"
                           />
-                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all" style={{'--tw-ring-color': '#fef2f2', backgroundColor: settings.notifications.emailNotifications ? '#e5080c' : ''} as any}></div>
                         </label>
                       </div>
 
@@ -277,7 +283,7 @@ export default function SettingsPage() {
                             onChange={(e) => updateSetting('notifications', 'newUserRegistration', e.target.checked)}
                             className="sr-only peer"
                           />
-                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all" style={{'--tw-ring-color': '#fef2f2', backgroundColor: settings.notifications.newUserRegistration ? '#e5080c' : ''} as any}></div>
                         </label>
                       </div>
 
@@ -293,7 +299,7 @@ export default function SettingsPage() {
                             onChange={(e) => updateSetting('notifications', 'newBusinessRegistration', e.target.checked)}
                             className="sr-only peer"
                           />
-                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all" style={{'--tw-ring-color': '#fef2f2', backgroundColor: settings.notifications.newBusinessRegistration ? '#e5080c' : ''} as any}></div>
                         </label>
                       </div>
 
@@ -309,7 +315,7 @@ export default function SettingsPage() {
                             onChange={(e) => updateSetting('notifications', 'reportedContent', e.target.checked)}
                             className="sr-only peer"
                           />
-                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all" style={{'--tw-ring-color': '#fef2f2', backgroundColor: settings.notifications.reportedContent ? '#e5080c' : ''} as any}></div>
                         </label>
                       </div>
                     </div>
@@ -329,7 +335,8 @@ export default function SettingsPage() {
                           type="number"
                           value={settings.security.sessionTimeout}
                           onChange={(e) => updateSetting('security', 'sessionTimeout', parseInt(e.target.value))}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent"
+                          style={{'--tw-ring-color': '#e5080c'} as any}
                         />
                       </div>
                       <div>
@@ -338,7 +345,8 @@ export default function SettingsPage() {
                           type="number"
                           value={settings.security.passwordMinLength}
                           onChange={(e) => updateSetting('security', 'passwordMinLength', parseInt(e.target.value))}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent"
+                          style={{'--tw-ring-color': '#e5080c'} as any}
                         />
                       </div>
                     </div>
@@ -355,7 +363,7 @@ export default function SettingsPage() {
                             onChange={(e) => updateSetting('security', 'requireEmailVerification', e.target.checked)}
                             className="sr-only peer"
                           />
-                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all" style={{'--tw-ring-color': '#fef2f2', backgroundColor: settings.security.requireEmailVerification ? '#e5080c' : ''} as any}></div>
                         </label>
                       </div>
                     </div>
@@ -375,7 +383,8 @@ export default function SettingsPage() {
                           type="number"
                           value={settings.content.maxPostLength}
                           onChange={(e) => updateSetting('content', 'maxPostLength', parseInt(e.target.value))}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent"
+                          style={{'--tw-ring-color': '#e5080c'} as any}
                         />
                       </div>
                       <div>
@@ -384,7 +393,8 @@ export default function SettingsPage() {
                           type="number"
                           value={settings.content.maxImageSize}
                           onChange={(e) => updateSetting('content', 'maxImageSize', parseInt(e.target.value))}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent"
+                          style={{'--tw-ring-color': '#e5080c'} as any}
                         />
                       </div>
                     </div>
@@ -401,7 +411,7 @@ export default function SettingsPage() {
                             onChange={(e) => updateSetting('content', 'allowImages', e.target.checked)}
                             className="sr-only peer"
                           />
-                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all" style={{'--tw-ring-color': '#fef2f2', backgroundColor: settings.content.allowImages ? '#e5080c' : ''} as any}></div>
                         </label>
                       </div>
                     </div>
@@ -414,7 +424,8 @@ export default function SettingsPage() {
                 <button
                   onClick={handleSave}
                   disabled={isSaving}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-200 disabled:opacity-50 flex items-center space-x-2"
+                  className="text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 disabled:opacity-50 flex items-center space-x-2 hover:opacity-90"
+                  style={{background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)'}}
                 >
                   {isSaving ? (
                     <>
