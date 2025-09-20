@@ -335,22 +335,32 @@ export default function PostsPage() {
                 <div className="flex flex-col space-y-2">
                   <button
                     onClick={() => setSelectedPost(post)}
-                    className="text-white px-4 py-2 rounded-lg text-sm transition-colors hover:opacity-90"
-                    style={{backgroundColor: '#e5080c'}}
+                    className="flex items-center justify-center space-x-2 text-white px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 hover:shadow-lg transform hover:-translate-y-0.5"
+                    style={{background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)'}}
                   >
-                    View Details
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    <span>View Details</span>
                   </button>
                   <button
                     onClick={() => handleSetDuration(post)}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition-colors"
+                    className="flex items-center justify-center space-x-2 bg-blue-500 text-white px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-blue-600 hover:shadow-lg transform hover:-translate-y-0.5"
                   >
-                    Set Duration
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>Set Duration</span>
                   </button>
                   <button
                     onClick={() => handleSetViewLimit(post)}
-                    className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-700 transition-colors"
+                    className="flex items-center justify-center space-x-2 bg-emerald-500 text-white px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-emerald-600 hover:shadow-lg transform hover:-translate-y-0.5"
                   >
-                    Set View Limit
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                    <span>Set View Limit</span>
                   </button>
                   <button
                     onClick={() => handleAssignLabel(post)}
@@ -361,12 +371,13 @@ export default function PostsPage() {
                   <select
                     value={post.status}
                     onChange={(e) => handleStatusChange(post.id, e.target.value as any)}
-                    className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm font-medium focus:ring-2 focus:border-transparent transition-all duration-200 bg-white hover:border-gray-400"
+                    style={{'--tw-ring-color': '#e5080c'} as any}
                   >
-                    <option value="published">Published</option>
-                    <option value="pending">Pending</option>
-                    <option value="rejected">Rejected</option>
-                    <option value="expired">Expired</option>
+                    <option value="published">📢 Published</option>
+                    <option value="pending">⏳ Pending</option>
+                    <option value="rejected">❌ Rejected</option>
+                    <option value="expired">⏰ Expired</option>
                   </select>
                   {post.expiresAt && (
                     <div className="text-xs text-gray-500">
