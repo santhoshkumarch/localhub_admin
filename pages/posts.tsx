@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
+import { apiService } from '../services/api';
 
 interface Post {
   id: number;
@@ -25,32 +26,36 @@ interface Post {
 }
 
 export default function PostsPage() {
-  const [posts, setPosts] = useState<Post[]>([
-    { id: 1, title: 'We are hiring Full-time Sales Executive', content: 'Looking for experienced sales professional for full-time position with competitive salary and benefits.', author: 'Tech Corp', authorType: 'business', category: 'Jobs', hashtags: ['hiring', 'sales', 'fulltime'], likes: 45, comments: 12, shares: 8, status: 'published', createdAt: '2024-01-20', updatedAt: '2024-01-20', assignedLabel: 'Full-time Job', menuId: 1 },
-    { id: 2, title: 'Part-time Delivery Boy needed', content: 'Join our delivery team for part-time work. Flexible hours and good pay. Perfect for students.', author: 'QuickDelivery', authorType: 'business', category: 'Jobs', hashtags: ['delivery', 'parttime', 'flexible'], likes: 32, comments: 7, shares: 15, status: 'published', createdAt: '2024-01-19', updatedAt: '2024-01-19', assignedLabel: 'Part-time Job', menuId: 1 },
-    { id: 3, title: 'Summer Internship opportunity', content: 'Internship program for computer science students. Learn real-world development skills with mentorship.', author: 'StartupHub', authorType: 'business', category: 'Jobs', hashtags: ['internship', 'students', 'development'], likes: 28, comments: 5, shares: 6, status: 'published', createdAt: '2024-01-18', updatedAt: '2024-01-18', assignedLabel: 'Internship', menuId: 1 },
-    { id: 4, title: 'Premium Silk Sarees Collection', content: 'New collection of Kanchipuram silk sarees arrived! Traditional designs with modern patterns. Visit our showroom for exclusive offers.', author: 'Priya Textiles', authorType: 'business', category: 'Textiles', hashtags: ['sarees', 'silk', 'traditional'], likes: 67, comments: 18, shares: 23, status: 'published', createdAt: '2024-01-17', updatedAt: '2024-01-17' },
-    { id: 5, title: 'Professional Catering Services', content: 'Royal Caterers provides professional catering for weddings, corporate events, and parties. Authentic South Indian cuisine with modern presentation.', author: 'Royal Caterers', authorType: 'business', category: 'Restaurant', hashtags: ['catering', 'wedding', 'events'], likes: 41, comments: 9, shares: 12, status: 'published', createdAt: '2024-01-16', updatedAt: '2024-01-16' },
-    { id: 6, title: 'Electronics Sale - Up to 50% Off', content: 'Mega electronics sale at Kumar Electronics! Smartphones, laptops, home appliances - everything at discounted prices. Limited time offer!', author: 'Kumar Electronics', authorType: 'business', category: 'Electronics', hashtags: ['electronics', 'sale', 'discount'], likes: 89, comments: 25, shares: 34, status: 'published', createdAt: '2024-01-15', updatedAt: '2024-01-15' },
-    { id: 7, title: 'Auto Repair Workshop - Expert Service', content: 'Complete automobile repair and maintenance services. Experienced mechanics, genuine spare parts, and affordable pricing. Your car deserves the best!', author: 'Ravi Auto Works', authorType: 'business', category: 'Auto Repair', hashtags: ['auto', 'repair', 'car'], likes: 23, comments: 4, shares: 7, status: 'published', createdAt: '2024-01-14', updatedAt: '2024-01-14' },
-    { id: 8, title: 'Designer Fashion Collection Launch', content: 'Meera Fashion Boutique presents the latest designer collection for the wedding season. Exclusive designs for modern women. Book your appointment now!', author: 'Meera Fashion Boutique', authorType: 'business', category: 'Fashion', hashtags: ['fashion', 'designer', 'wedding'], likes: 56, comments: 14, shares: 19, status: 'pending', createdAt: '2024-01-13', updatedAt: '2024-01-13' },
-    { id: 9, title: 'Home Appliances at Best Prices', content: 'Suresh Electronics offers the best deals on home appliances. Refrigerators, washing machines, air conditioners - all with warranty and free installation.', author: 'Suresh Electronics', authorType: 'business', category: 'Electronics', hashtags: ['appliances', 'home', 'warranty'], likes: 34, comments: 8, shares: 11, status: 'published', createdAt: '2024-01-12', updatedAt: '2024-01-12' },
-    { id: 10, title: 'Beauty Treatments & Bridal Makeup', content: 'Professional beauty treatments and bridal makeup services at Divya Beauty Parlour. Experienced beauticians and premium products for your special day.', author: 'Divya Beauty Parlour', authorType: 'business', category: 'Beauty & Wellness', hashtags: ['beauty', 'bridal', 'makeup'], likes: 78, comments: 22, shares: 16, status: 'published', createdAt: '2024-01-11', updatedAt: '2024-01-11' },
-    { id: 11, title: 'Looking for Good Restaurant Recommendations', content: 'Hi everyone! I am new to Chennai and looking for good South Indian restaurants. Any recommendations for authentic food? Please share your favorites!', author: 'Arun Kumar', authorType: 'individual', category: 'Food & Dining', hashtags: ['food', 'restaurant', 'recommendations'], likes: 15, comments: 28, shares: 3, status: 'published', createdAt: '2024-01-10', updatedAt: '2024-01-10' },
-    { id: 12, title: 'Traditional Sweets for Festival Season', content: 'Siva Sweets brings you the finest traditional sweets for the festival season. Made with pure ghee and premium ingredients. Order online for home delivery!', author: 'Siva Sweets', authorType: 'business', category: 'Restaurant', hashtags: ['sweets', 'festival', 'traditional'], likes: 92, comments: 31, shares: 27, status: 'published', createdAt: '2024-01-09', updatedAt: '2024-01-09' },
-    { id: 13, title: 'Mobile Accessories & Repair Center', content: 'Karthik Mobile Center - your one-stop shop for mobile phones, accessories, and repair services. Latest models available with best prices and warranty.', author: 'Karthik Mobile Center', authorType: 'business', category: 'Electronics', hashtags: ['mobile', 'accessories', 'repair'], likes: 19, comments: 6, shares: 4, status: 'published', createdAt: '2024-01-08', updatedAt: '2024-01-08' },
-    { id: 14, title: 'Wholesale Textile Business Opportunity', content: 'Vasantha Textiles offers wholesale rates for bulk buyers. Quality fabrics, competitive prices, and reliable service. Contact us for business partnerships.', author: 'Vasantha Textiles', authorType: 'business', category: 'Textiles', hashtags: ['textiles', 'wholesale', 'business'], likes: 27, comments: 9, shares: 8, status: 'published', createdAt: '2024-01-07', updatedAt: '2024-01-07' },
-    { id: 15, title: 'Construction Materials & Hardware Supplies', content: 'Ganesan Hardware - complete solution for all your construction needs. Quality materials, competitive prices, and timely delivery guaranteed.', author: 'Ganesan Hardware', authorType: 'business', category: 'Hardware', hashtags: ['construction', 'hardware', 'materials'], likes: 12, comments: 3, shares: 5, status: 'published', createdAt: '2024-01-06', updatedAt: '2024-01-06' },
-    { id: 16, title: 'Fresh Bakery Items Daily', content: 'Prema Bakery serves fresh bakery items daily. Cakes, pastries, bread, and snacks made with finest ingredients. Special orders for birthdays and celebrations!', author: 'Prema Bakery', authorType: 'business', category: 'Restaurant', hashtags: ['bakery', 'cakes', 'fresh'], likes: 48, comments: 11, shares: 13, status: 'published', createdAt: '2024-01-05', updatedAt: '2024-01-05' },
-    { id: 17, title: 'Need Recommendations for Electronics Store', content: 'Planning to buy a new laptop for my studies. Can anyone recommend good electronics stores with reasonable prices and good service?', author: 'Priya Sharma', authorType: 'individual', category: 'Electronics', hashtags: ['laptop', 'electronics', 'recommendations'], likes: 8, comments: 15, shares: 2, status: 'published', createdAt: '2024-01-04', updatedAt: '2024-01-04' },
-    { id: 18, title: 'Gold & Silver Jewellery Collection', content: 'Kamala Jewellery presents exquisite collection of gold and silver jewellery with traditional South Indian designs. Visit our showroom for exclusive pieces.', author: 'Kamala Jewellery', authorType: 'business', category: 'Jewellery', hashtags: ['jewellery', 'gold', 'silver'], likes: 73, comments: 19, shares: 21, status: 'published', createdAt: '2024-01-03', updatedAt: '2024-01-03' },
-    { id: 19, title: 'Daily Provisions & Household Items', content: 'Murugan Provision Store - your neighborhood store for daily provisions and household items. Quality products at affordable prices with home delivery service.', author: 'Murugan Provision Store', authorType: 'business', category: 'Grocery', hashtags: ['provisions', 'household', 'delivery'], likes: 21, comments: 5, shares: 7, status: 'published', createdAt: '2024-01-02', updatedAt: '2024-01-02' },
-    { id: 20, title: 'Healthcare Services & Family Medicine', content: 'Radha Clinic provides comprehensive healthcare services and family medicine. Experienced doctors, modern facilities, and affordable treatment for all.', author: 'Dr. Radha Krishnan', authorType: 'business', category: 'Healthcare', hashtags: ['healthcare', 'medicine', 'clinic'], likes: 65, comments: 16, shares: 14, status: 'published', createdAt: '2024-01-01', updatedAt: '2024-01-01' },
-  ]);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [filterCategory, setFilterCategory] = useState('all');
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      fetchPosts();
+    }, searchTerm ? 500 : 0); // Debounce search by 500ms
+    
+    return () => clearTimeout(timeoutId);
+  }, [searchTerm, filterStatus, filterCategory]);
+
+  const fetchPosts = async () => {
+    try {
+      setLoading(true);
+      const data = await apiService.getPosts({
+        search: searchTerm || undefined,
+        status: filterStatus,
+        category: filterCategory
+      });
+      setPosts(data);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [showDurationModal, setShowDurationModal] = useState(false);
@@ -74,15 +79,8 @@ export default function PostsPage() {
   ];
 
 
-  const filteredPosts = posts.filter(post => {
-    const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         post.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         post.author.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = filterStatus === 'all' || post.status === filterStatus;
-    const matchesCategory = filterCategory === 'all' || post.category === filterCategory;
-    
-    return matchesSearch && matchesStatus && matchesCategory;
-  });
+  // Since filtering is now done on the backend, we just use the posts directly
+  const filteredPosts = posts;
 
   const stats = {
     total: posts.length,
@@ -91,10 +89,15 @@ export default function PostsPage() {
     totalLikes: posts.reduce((sum, p) => sum + p.likes, 0),
   };
 
-  const handleStatusChange = (postId: number, newStatus: 'published' | 'pending' | 'rejected') => {
-    setPosts(posts.map(post =>
-      post.id === postId ? { ...post, status: newStatus } : post
-    ));
+  const handleStatusChange = async (postId: number, newStatus: 'published' | 'pending' | 'rejected') => {
+    try {
+      await apiService.updatePostStatus(postId, newStatus);
+      setPosts(posts.map(post =>
+        post.id === postId ? { ...post, status: newStatus } : post
+      ));
+    } catch (error) {
+      console.error('Error updating post status:', error);
+    }
   };
 
   const handleSetDuration = (post: Post) => {
@@ -103,16 +106,21 @@ export default function PostsPage() {
     setShowDurationModal(true);
   };
 
-  const handleSaveDuration = () => {
+  const handleSaveDuration = async () => {
     if (durationPost) {
-      const expiresAt = new Date();
-      expiresAt.setDate(expiresAt.getDate() + viewDuration);
-      
-      setPosts(posts.map(post =>
-        post.id === durationPost.id 
-          ? { ...post, viewDuration, expiresAt: expiresAt.toISOString().split('T')[0] }
-          : post
-      ));
+      try {
+        await apiService.setPostDuration(durationPost.id, viewDuration);
+        const expiresAt = new Date();
+        expiresAt.setDate(expiresAt.getDate() + viewDuration);
+        
+        setPosts(posts.map(post =>
+          post.id === durationPost.id 
+            ? { ...post, viewDuration, expiresAt: expiresAt.toISOString().split('T')[0] }
+            : post
+        ));
+      } catch (error) {
+        console.error('Error setting post duration:', error);
+      }
     }
     setShowDurationModal(false);
     setDurationPost(null);
@@ -124,13 +132,18 @@ export default function PostsPage() {
     setShowViewLimitModal(true);
   };
 
-  const handleSaveViewLimit = () => {
+  const handleSaveViewLimit = async () => {
     if (viewLimitPost) {
-      setPosts(posts.map(post =>
-        post.id === viewLimitPost.id 
-          ? { ...post, viewLimit, currentViews: post.currentViews || 0 }
-          : post
-      ));
+      try {
+        await apiService.setPostViewLimit(viewLimitPost.id, viewLimit);
+        setPosts(posts.map(post =>
+          post.id === viewLimitPost.id 
+            ? { ...post, viewLimit, currentViews: post.currentViews || 0 }
+            : post
+        ));
+      } catch (error) {
+        console.error('Error setting post view limit:', error);
+      }
     }
     setShowViewLimitModal(false);
     setViewLimitPost(null);
@@ -143,13 +156,18 @@ export default function PostsPage() {
     setShowLabelModal(true);
   };
 
-  const handleSaveLabel = () => {
+  const handleSaveLabel = async () => {
     if (labelPost && selectedMenu && selectedLabel) {
-      setPosts(posts.map(post =>
-        post.id === labelPost.id 
-          ? { ...post, menuId: selectedMenu, assignedLabel: selectedLabel }
-          : post
-      ));
+      try {
+        await apiService.assignPostLabel(labelPost.id, selectedMenu, selectedLabel);
+        setPosts(posts.map(post =>
+          post.id === labelPost.id 
+            ? { ...post, menuId: selectedMenu, assignedLabel: selectedLabel }
+            : post
+        ));
+      } catch (error) {
+        console.error('Error assigning post label:', error);
+      }
     }
     setShowLabelModal(false);
     setLabelPost(null);
@@ -278,8 +296,13 @@ export default function PostsPage() {
         </div>
 
         {/* Posts List */}
-        <div className="space-y-6">
-          {filteredPosts.map((post) => (
+        {loading ? (
+          <div className="flex justify-center items-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2" style={{borderColor: '#e5080c'}}></div>
+          </div>
+        ) : (
+          <div className="space-y-6">
+            {filteredPosts.map((post) => (
             <div key={post.id} className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">
@@ -408,8 +431,9 @@ export default function PostsPage() {
                 </div>
               </div>
             </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
         {/* Duration Setting Modal */}
         {showDurationModal && durationPost && (

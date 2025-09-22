@@ -1,57 +1,77 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
+import { apiService } from '../services/api';
 
 export default function SettingsPage() {
-  const [settings, setSettings] = useState({
+  const [settings, setSettings] = useState<any>({
     general: {
-      siteName: 'LocalHub Admin',
-      siteDescription: 'District-wise business directory and social platform for Tamil Nadu',
-      contactEmail: 'admin@localhub.com',
-      supportPhone: '+91 98765 43210',
-      timezone: 'Asia/Kolkata',
-      language: 'en',
+      siteName: '',
+      contactEmail: '',
+      siteDescription: '',
+      supportPhone: '',
+      timezone: 'Asia/Kolkata'
     },
     platform: {
       userRegistration: true,
       businessRegistration: true,
-      postModeration: true,
-      autoApproveBusinesses: false,
-      autoApprovePosts: false,
-      allowGuestPosting: false,
+      postModeration: false,
+      autoApproveBusinesses: false
     },
     notifications: {
       emailNotifications: true,
-      smsNotifications: false,
-      pushNotifications: true,
       newUserRegistration: true,
       newBusinessRegistration: true,
-      newPostSubmission: true,
-      reportedContent: true,
+      reportedContent: true
     },
     security: {
-      twoFactorAuth: false,
       sessionTimeout: 30,
       passwordMinLength: 8,
-      requireEmailVerification: true,
-      allowMultipleSessions: true,
+      requireEmailVerification: false
     },
     content: {
       maxPostLength: 500,
-      allowImages: true,
-      allowVideos: false,
       maxImageSize: 5,
-      bannedWords: ['spam', 'fake', 'scam'],
+      allowImages: true
     }
   });
+  const [loading, setLoading] = useState(true);
 
   const [activeTab, setActiveTab] = useState('general');
   const [isSaving, setIsSaving] = useState(false);
 
+  useEffect(() => {
+    fetchSettings();
+  }, []);
+
+  const fetchSettings = async () => {
+    try {
+      setLoading(true);
+      const data = await apiService.getSettings();
+      setSettings(prev => ({
+        general: { ...prev.general, ...data.general },
+        platform: { ...prev.platform, ...data.platform },
+        notifications: { ...prev.notifications, ...data.notifications },
+        security: { ...prev.security, ...data.security },
+        content: { ...prev.content, ...data.content }
+      }));
+    } catch (error) {
+      console.error('Error fetching settings:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSave = async () => {
     setIsSaving(true);
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    setIsSaving(false);
-    alert('Settings saved successfully!');
+    try {
+      await apiService.updateSettings(activeTab, settings[activeTab] || {});
+      alert('Settings saved successfully!');
+    } catch (error) {
+      console.error('Error saving settings:', error);
+      alert('Error saving settings');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const updateSetting = (section: string, key: string, value: any) => {
@@ -109,7 +129,12 @@ export default function SettingsPage() {
 
           {/* Settings Content */}
           <div className="flex-1">
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+            {loading ? (
+              <div className="flex justify-center items-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2" style={{borderColor: '#e5080c'}}></div>
+              </div>
+            ) : (
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200">
               {/* General Settings */}
               {activeTab === 'general' && (
                 <div className="p-6">
@@ -445,7 +470,8 @@ export default function SettingsPage() {
                   )}
                 </button>
               </div>
-            </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

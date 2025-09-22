@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
+import { apiService } from '../services/api';
 
 interface Label {
   id: number;
@@ -10,15 +11,28 @@ interface Label {
 }
 
 export default function LabelsPage() {
-  const [labels, setLabels] = useState<Label[]>([
-    { id: 1, name: 'business', color: 'blue', createdAt: '2024-01-15', usageCount: 45 },
-    { id: 2, name: 'food', color: 'green', createdAt: '2024-01-14', usageCount: 32 },
-    { id: 3, name: 'shopping', color: 'purple', createdAt: '2024-01-13', usageCount: 28 },
-  ]);
+  const [labels, setLabels] = useState<Label[]>([]);
+  const [loading, setLoading] = useState(true);
   
   const [newLabel, setNewLabel] = useState('');
   const [selectedColor, setSelectedColor] = useState('blue');
   const [isCreating, setIsCreating] = useState(false);
+
+  useEffect(() => {
+    fetchLabels();
+  }, []);
+
+  const fetchLabels = async () => {
+    try {
+      setLoading(true);
+      const data = await apiService.getHashtags();
+      setLabels(data);
+    } catch (error) {
+      console.error('Error fetching labels:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const colors = [
     { name: 'blue', class: 'bg-blue-100 text-blue-800 border-blue-200' },
@@ -34,23 +48,27 @@ export default function LabelsPage() {
     if (!newLabel.trim()) return;
 
     setIsCreating(true);
-    await new Promise(resolve => setTimeout(resolve, 500));
-
-    const newTag: Label = {
-      id: Date.now(),
-      name: newLabel.toLowerCase().replace(/[^a-z0-9]/g, ''),
-      color: selectedColor,
-      createdAt: new Date().toISOString().split('T')[0],
-      usageCount: 0,
-    };
-
-    setLabels([newTag, ...labels]);
-    setNewLabel('');
-    setIsCreating(false);
+    try {
+      await apiService.createHashtag({
+        name: newLabel.toLowerCase().replace(/[^a-z0-9]/g, ''),
+        color: selectedColor
+      });
+      await fetchLabels();
+      setNewLabel('');
+    } catch (error) {
+      console.error('Error creating label:', error);
+    } finally {
+      setIsCreating(false);
+    }
   };
 
-  const handleDelete = (id: number) => {
-    setLabels(labels.filter(tag => tag.id !== id));
+  const handleDelete = async (id: number) => {
+    try {
+      await apiService.deleteHashtag(id);
+      await fetchLabels();
+    } catch (error) {
+      console.error('Error deleting label:', error);
+    }
   };
 
   const getColorClass = (color: string) => {
@@ -153,7 +171,11 @@ export default function LabelsPage() {
           </div>
 
           <div className="p-4 sm:p-6">
-            {labels.length === 0 ? (
+            {loading ? (
+              <div className="flex justify-center items-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2" style={{borderColor: '#e5080c'}}></div>
+              </div>
+            ) : labels.length === 0 ? (
               <div className="text-center py-12">
                 <svg className="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
@@ -186,7 +208,7 @@ export default function LabelsPage() {
                       </div>
                       <div className="flex items-center justify-between">
                         <span>Created:</span>
-                        <span className="font-medium">{label.createdAt}</span>
+                        <span className="font-medium">{new Date(label.createdAt).toLocaleDateString()}</span>
                       </div>
                     </div>
                   </div>

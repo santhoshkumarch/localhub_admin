@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Layout from '../components/Layout';
+import { apiService } from '../services/api';
 
 export default function AccountSettingsPage() {
   const [activeTab, setActiveTab] = useState('security');
@@ -28,6 +29,30 @@ export default function AccountSettingsPage() {
     dataSharing: false,
     analyticsOptIn: true
   });
+
+  const handlePasswordChange = async () => {
+    if (securitySettings.newPassword !== securitySettings.confirmPassword) {
+      alert('Passwords do not match');
+      return;
+    }
+    
+    try {
+      await apiService.changePassword({
+        currentPassword: securitySettings.currentPassword,
+        newPassword: securitySettings.newPassword
+      });
+      setSecuritySettings({
+        ...securitySettings,
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: ''
+      });
+      alert('Password changed successfully!');
+    } catch (error) {
+      console.error('Error changing password:', error);
+      alert('Error changing password');
+    }
+  };
 
   const handleSave = async () => {
     setIsSaving(true);
@@ -120,6 +145,7 @@ export default function AccountSettingsPage() {
                         />
                       </div>
                       <button
+                        onClick={handlePasswordChange}
                         className="text-white px-6 py-2 rounded-lg transition-colors hover:opacity-90"
                         style={{backgroundColor: '#e5080c'}}
                       >

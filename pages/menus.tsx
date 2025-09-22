@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
+import { apiService } from '../services/api';
 
 interface Menu {
   id: number;
@@ -26,20 +27,35 @@ interface Post {
 }
 
 export default function MenusPage() {
-  const [menus, setMenus] = useState<Menu[]>([
-    { id: 1, name: 'Jobs', description: 'Job opportunities and career posts', icon: '💼', labels: ['Career', 'Vacancy', 'Full-time Job', 'Part-time Job', 'Internship'], timeFilter: '3months', postCount: 15, isActive: true, createdAt: '2024-01-15' },
-    { id: 2, name: 'Offers', description: 'Deals and promotional offers', icon: '🏷️', labels: ['Discounts', 'Coupons', 'Sale', 'Special Offer'], timeFilter: '1month', postCount: 12, isActive: true, createdAt: '2024-01-14' },
-    { id: 3, name: 'Events', description: 'Community and business events', icon: '🎉', labels: ['Workshop', 'Seminar', 'Conference', 'Networking'], timeFilter: '6months', postCount: 18, isActive: true, createdAt: '2024-01-13' },
-    { id: 4, name: 'Services', description: 'Professional services', icon: '🔧', labels: ['Repair', 'Maintenance', 'Consultation'], timeFilter: 'all', postCount: 8, isActive: false, createdAt: '2024-01-12' },
-  ]);
+  const [menus, setMenus] = useState<Menu[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const [posts] = useState<Post[]>([
-    { id: 1, title: 'We are hiring Full-time Sales Executive', content: 'Looking for experienced sales professional for full-time position...', author: 'Tech Corp', assignedLabel: 'Full-time Job', menuId: 1, likes: 23, comments: 5, createdAt: '2024-01-16' },
-    { id: 2, title: 'Part-time Delivery Boy needed', content: 'Join our delivery team for part-time work...', author: 'Digital Agency', assignedLabel: 'Part-time Job', menuId: 1, likes: 18, comments: 3, createdAt: '2024-01-15' },
-    { id: 3, title: 'Summer Internship opportunity', content: 'Internship program for students...', author: 'StartupHub', assignedLabel: 'Internship', menuId: 1, likes: 12, comments: 2, createdAt: '2024-01-14' },
-    { id: 4, title: '50% Off Electronics Sale', content: 'Huge discount on all electronics...', author: 'ElectroMart', assignedLabel: 'Discounts', menuId: 2, likes: 31, comments: 8, createdAt: '2024-01-13' },
-    { id: 5, title: 'Mobile Repair Service', content: 'Quick mobile repair services...', author: 'Tech Solutions', assignedLabel: 'Repair', menuId: 4, likes: 27, comments: 6, createdAt: '2024-01-12' },
-  ]);
+  const [posts, setPosts] = useState<Post[]>([]);
+
+  useEffect(() => {
+    fetchMenus();
+  }, []);
+
+  const fetchMenus = async () => {
+    try {
+      setLoading(true);
+      const data = await apiService.getMenus();
+      setMenus(data);
+    } catch (error) {
+      console.error('Error fetching menus:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchMenuPosts = async (menu: Menu) => {
+    try {
+      const data = await apiService.getMenuPosts(menu.id, menu.timeFilter);
+      setPosts(data);
+    } catch (error) {
+      console.error('Error fetching menu posts:', error);
+    }
+  };
 
   const [selectedMenu, setSelectedMenu] = useState<Menu | null>(null);
   const [newMenu, setNewMenu] = useState({ name: '', description: '', icon: '', labels: [] as string[], timeFilter: '3months' as const });
@@ -63,37 +79,28 @@ export default function MenusPage() {
     if (!newMenu.name.trim() || !newMenu.icon || newMenu.labels.length === 0) return;
 
     setIsCreating(true);
-    await new Promise(resolve => setTimeout(resolve, 500));
-
-    const menu: Menu = {
-      id: Date.now(),
-      name: newMenu.name,
-      description: newMenu.description,
-      icon: newMenu.icon,
-      labels: newMenu.labels,
-      timeFilter: newMenu.timeFilter,
-      postCount: 0,
-      isActive: true,
-      createdAt: new Date().toISOString().split('T')[0],
-    };
-
-    setMenus([menu, ...menus]);
-    setNewMenu({ name: '', description: '', icon: '', labels: [], timeFilter: '3months' });
-    setShowCreateForm(false);
-    setIsCreating(false);
+    try {
+      await apiService.createMenu({
+        name: newMenu.name,
+        description: newMenu.description,
+        icon: newMenu.icon,
+        labels: newMenu.labels,
+        timeFilter: newMenu.timeFilter
+      });
+      
+      await fetchMenus(); // Refresh the list
+      setNewMenu({ name: '', description: '', icon: '', labels: [], timeFilter: '3months' });
+      setShowCreateForm(false);
+    } catch (error) {
+      console.error('Error creating menu:', error);
+    } finally {
+      setIsCreating(false);
+    }
   };
 
-  const getMenuPosts = (menu: Menu) => {
-    let filtered = posts.filter(post => post.menuId === menu.id);
-    
-    if (menu.timeFilter !== 'all') {
-      const now = new Date();
-      const months = menu.timeFilter === '1month' ? 1 : menu.timeFilter === '3months' ? 3 : 6;
-      const cutoffDate = new Date(now.getFullYear(), now.getMonth() - months, now.getDate());
-      filtered = filtered.filter(post => new Date(post.createdAt) >= cutoffDate);
-    }
-    
-    return filtered;
+  const handleMenuClick = async (menu: Menu) => {
+    setSelectedMenu(menu);
+    await fetchMenuPosts(menu);
   };
 
   const addLabel = () => {
@@ -299,7 +306,12 @@ export default function MenusPage() {
         )}
 
         {/* Menus List */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+        {loading ? (
+          <div className="flex justify-center items-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2" style={{borderColor: '#e5080c'}}></div>
+          </div>
+        ) : (
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200">
           <div className="p-6 border-b border-gray-200">
             <h2 className="text-xl font-semibold text-gray-900">All Menus ({menus.length})</h2>
           </div>
@@ -308,7 +320,7 @@ export default function MenusPage() {
               {menus.map((menu) => (
                 <div
                   key={menu.id}
-                  onClick={() => setSelectedMenu(menu)}
+                  onClick={() => handleMenuClick(menu)}
                   className="bg-gray-50 rounded-lg p-6 hover:bg-gray-100 transition-colors duration-200 cursor-pointer border border-gray-200"
                 >
                   <div className="flex items-start justify-between">
@@ -347,7 +359,8 @@ export default function MenusPage() {
               ))}
             </div>
           </div>
-        </div>
+          </div>
+        )}
 
         {/* Menu Detail Modal */}
         {selectedMenu && (
@@ -384,17 +397,17 @@ export default function MenusPage() {
               
               <div className="p-6 overflow-y-auto max-h-[60vh]">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                  Filtered Posts ({getMenuPosts(selectedMenu).length})
+                  Filtered Posts ({posts.length})
                 </h3>
                 
-                {getMenuPosts(selectedMenu).length === 0 ? (
+                {posts.length === 0 ? (
                   <div className="text-center py-8">
                     <div className="text-gray-400 text-4xl mb-4">📝</div>
                     <p className="text-gray-500">No posts match the current filter criteria</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    {getMenuPosts(selectedMenu).map((post) => (
+                    {posts.map((post) => (
                       <div key={post.id} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
                         <div className="flex items-start justify-between">
                           <div className="flex-1">

@@ -76,14 +76,42 @@ class ApiService {
     return this.request('/businesses');
   }
 
-  async getPosts() {
-    return this.request('/posts');
+  async getPosts(params?: { search?: string; status?: string; category?: string; authorType?: string }) {
+    const queryParams = new URLSearchParams();
+    if (params?.search) queryParams.append('search', params.search);
+    if (params?.status && params.status !== 'all') queryParams.append('status', params.status);
+    if (params?.category && params.category !== 'all') queryParams.append('category', params.category);
+    if (params?.authorType && params.authorType !== 'all') queryParams.append('authorType', params.authorType);
+    
+    const endpoint = queryParams.toString() ? `/posts?${queryParams}` : '/posts';
+    return this.request(endpoint);
   }
 
   async updatePostStatus(id: number, status: string) {
     return this.request(`/posts/${id}/status`, {
       method: 'PATCH',
       body: JSON.stringify({ status }),
+    });
+  }
+
+  async setPostDuration(id: number, viewDuration: number) {
+    return this.request(`/posts/${id}/duration`, {
+      method: 'PATCH',
+      body: JSON.stringify({ viewDuration }),
+    });
+  }
+
+  async setPostViewLimit(id: number, viewLimit: number) {
+    return this.request(`/posts/${id}/view-limit`, {
+      method: 'PATCH',
+      body: JSON.stringify({ viewLimit }),
+    });
+  }
+
+  async assignPostLabel(id: number, menuId: number, assignedLabel: string) {
+    return this.request(`/posts/${id}/label`, {
+      method: 'PATCH',
+      body: JSON.stringify({ menuId, assignedLabel }),
     });
   }
 
@@ -101,6 +129,72 @@ class ApiService {
   async deleteHashtag(id: number) {
     return this.request(`/hashtags/${id}`, {
       method: 'DELETE',
+    });
+  }
+
+  async getMenus() {
+    return this.request('/menus');
+  }
+
+  async getMenuPosts(id: number, timeFilter?: string) {
+    const params = timeFilter ? `?timeFilter=${timeFilter}` : '';
+    return this.request(`/menus/${id}/posts${params}`);
+  }
+
+  async createMenu(data: any) {
+    return this.request('/menus', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async updateMenu(id: number, data: any) {
+    return this.request(`/menus/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deleteMenu(id: number) {
+    return this.request(`/menus/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async getAllLabels() {
+    return this.request('/menus/labels/all');
+  }
+
+  async getLabelPosts(menuId: number, labelName: string) {
+    return this.request(`/menus/${menuId}/labels/${encodeURIComponent(labelName)}/posts`);
+  }
+
+  async getSettings() {
+    return this.request('/settings');
+  }
+
+  async updateSettings(category: string, settings: any) {
+    return this.request('/settings', {
+      method: 'PUT',
+      body: JSON.stringify({ category, settings }),
+    });
+  }
+
+  async getProfile() {
+    return this.request('/auth/profile');
+  }
+
+  async updateProfile(data: any) {
+    return this.request('/auth/profile', {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async changePassword(data: any) {
+    return this.request('/auth/change-password', {
+      method: 'POST',
+      body: JSON.stringify(data),
     });
   }
 }

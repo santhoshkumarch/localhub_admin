@@ -187,7 +187,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </Link>
               </li> */}
               <li>
-                <Link href="/hashtags" className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:translate-x-1 ${isActive('/hashtags') ? 'text-white border-r-4 shadow-md' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:shadow-sm'}`} style={isActive('/hashtags') ? {background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)', borderRightColor: '#c0392b'} : {}}>
+                <Link href="/labels" className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:translate-x-1 ${isActive('/labels') ? 'text-white border-r-4 shadow-md' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:shadow-sm'}`} style={isActive('/labels') ? {background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)', borderRightColor: '#c0392b'} : {}}>
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
                   </svg>
