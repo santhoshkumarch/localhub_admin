@@ -41,8 +41,7 @@ export default function BusinessesPage() {
   const fetchBusinesses = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${process.env.NODE_ENV === 'production' ? 'https://localhub-backend-production.up.railway.app' : 'http://localhost:5000'}/api/businesses?search=${searchTerm}&category=${filterCategory}&status=${filterStatus}`);
-      const data = await response.json();
+      const data = await apiService.getBusinesses();
       setBusinesses(data);
     } catch (error) {
       console.error('Error fetching businesses:', error);
@@ -74,7 +73,8 @@ export default function BusinessesPage() {
 
   const handleStatusChange = async (businessId: number, newStatus: 'active' | 'pending' | 'suspended') => {
     try {
-      await fetch(`${process.env.NODE_ENV === 'production' ? 'https://localhub-backend-production.up.railway.app' : 'http://localhost:5000'}/api/businesses/${businessId}/status`, {
+      // Add updateBusinessStatus method to apiService if it doesn't exist
+      await fetch(`${process.env.NODE_ENV === 'production' ? 'https://localhubbackend-production.up.railway.app' : 'http://localhost:5000'}/api/businesses/${businessId}/status`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: newStatus })

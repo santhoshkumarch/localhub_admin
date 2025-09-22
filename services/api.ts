@@ -72,6 +72,10 @@ class ApiService {
     });
   }
 
+  async getDashboardStats() {
+    return this.request('/dashboard/stats');
+  }
+
   async getBusinesses() {
     return this.request('/businesses');
   }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
+import { apiService } from '../services/api';
 
 interface Activity {
   id: number;
@@ -28,8 +29,7 @@ export default function DashboardPage() {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${process.env.NODE_ENV === 'production' ? 'https://localhub-backend-production.up.railway.app' : 'http://localhost:5000'}/api/dashboard/stats`);
-      const data = await response.json();
+      const data = await apiService.getDashboardStats();
       
       console.log('Dashboard API response:', data);
       
