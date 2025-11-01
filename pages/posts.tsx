@@ -13,7 +13,7 @@ interface Post {
   likes: number;
   comments: number;
   shares: number;
-  status: 'published' | 'pending' | 'rejected' | 'expired';
+  status: 'approved' | 'pending' | 'rejected' | 'expired';
   createdAt: string;
   updatedAt: string;
   imageUrl?: string;
@@ -84,12 +84,12 @@ export default function PostsPage() {
 
   const stats = {
     total: posts.length,
-    published: posts.filter(p => p.status === 'published').length,
+    approved: posts.filter(p => p.status === 'approved').length,
     pending: posts.filter(p => p.status === 'pending').length,
     totalLikes: posts.reduce((sum, p) => sum + p.likes, 0),
   };
 
-  const handleStatusChange = async (postId: number, newStatus: 'published' | 'pending' | 'rejected') => {
+  const handleStatusChange = async (postId: number, newStatus: 'approved' | 'pending' | 'rejected') => {
     try {
       await apiService.updatePostStatus(postId, newStatus);
       setPosts(posts.map(post =>
@@ -216,8 +216,8 @@ export default function PostsPage() {
                 </svg>
               </div>
               <div className="ml-4">
-                <p className="text-sm text-gray-500">Published Posts</p>
-                <p className="text-2xl font-semibold text-gray-900">{stats.published}</p>
+                <p className="text-sm text-gray-500">Approved Posts</p>
+                <p className="text-2xl font-semibold text-gray-900">{stats.approved}</p>
               </div>
             </div>
           </div>
@@ -273,7 +273,7 @@ export default function PostsPage() {
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="all">All Status</option>
-                <option value="published">Published</option>
+                <option value="approved">Approved</option>
                 <option value="pending">Pending</option>
                 <option value="rejected">Rejected</option>
               </select>
@@ -309,7 +309,7 @@ export default function PostsPage() {
                   <div className="flex items-center space-x-3 mb-2">
                     <h3 className="text-lg font-semibold text-gray-900">{post.title}</h3>
                     <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                      post.status === 'published' ? 'bg-green-100 text-green-800' :
+                      post.status === 'approved' ? 'bg-green-100 text-green-800' :
                       post.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
                       'bg-red-100 text-red-800'
                     }`}>
@@ -328,7 +328,7 @@ export default function PostsPage() {
                     <span>• {post.createdAt}</span>
                   </div>
                   <div className="flex flex-wrap gap-2 mb-3">
-                    {post.hashtags.map((hashtag) => (
+                    {(post.hashtags || []).map((hashtag) => (
                       <span key={hashtag} className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">
                         #{hashtag}
                       </span>
@@ -397,9 +397,9 @@ export default function PostsPage() {
                     className="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm font-medium focus:ring-2 focus:border-transparent transition-all duration-200 bg-white hover:border-gray-400"
                     style={{'--tw-ring-color': '#e5080c'} as any}
                   >
-                    <option value="published">📢 Published</option>
+                    <option value="approved">✅ Approve</option>
                     <option value="pending">⏳ Pending</option>
-                    <option value="rejected">❌ Rejected</option>
+                    <option value="rejected">❌ Reject</option>
                     <option value="expired">⏰ Expired</option>
                   </select>
                   {post.expiresAt && (
@@ -683,7 +683,7 @@ export default function PostsPage() {
                   <div className="mt-3">
                     <span className="text-gray-600">Hashtags:</span>
                     <div className="flex flex-wrap gap-2 mt-1">
-                      {selectedPost.hashtags.map((hashtag) => (
+                      {(selectedPost.hashtags || []).map((hashtag) => (
                         <span key={hashtag} className="px-2 py-1 text-white text-xs rounded-full" style={{backgroundColor: '#e5080c'}}>
                           #{hashtag}
                         </span>

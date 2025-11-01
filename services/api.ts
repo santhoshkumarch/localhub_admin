@@ -1,6 +1,4 @@
-const API_BASE_URL = process.env.NODE_ENV == 'production' 
-  ? 'https://localhubbackend-production.up.railway.app/api'
-  : 'http://localhost:5000/api';
+const API_BASE_URL = 'https://localhubbackend-production.up.railway.app/api';
 
 class ApiService {
   private getAuthHeaders(): Record<string, string> {
@@ -87,7 +85,7 @@ class ApiService {
     if (params?.category && params.category !== 'all') queryParams.append('category', params.category);
     if (params?.authorType && params.authorType !== 'all') queryParams.append('authorType', params.authorType);
     
-    const endpoint = queryParams.toString() ? `/posts?${queryParams}` : '/posts';
+    const endpoint = queryParams.toString() ? `/posts/admin?${queryParams}` : '/posts/admin';
     return this.request(endpoint);
   }
 
