@@ -365,11 +365,11 @@ export default function PostsPage() {
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-col space-y-2">
+                <div className="flex flex-col space-y-2" style={{width: '180px'}}>
                   <button
                     onClick={() => setSelectedPost(post)}
                     className="flex items-center justify-center space-x-2 text-white px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 hover:shadow-lg transform hover:-translate-y-0.5"
-                    style={{background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)'}}
+                    style={{background: 'linear-gradient(135deg, #e5080c 0%, #ff4757 100%)', width: '180px'}}
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -380,6 +380,7 @@ export default function PostsPage() {
                   <button
                     onClick={() => handleSetDuration(post)}
                     className="flex items-center justify-center space-x-2 bg-blue-500 text-white px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-blue-600 hover:shadow-lg transform hover:-translate-y-0.5"
+                    style={{width: '180px'}}
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -389,6 +390,7 @@ export default function PostsPage() {
                   <button
                     onClick={() => handleSetViewLimit(post)}
                     className="flex items-center justify-center space-x-2 bg-emerald-500 text-white px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-emerald-600 hover:shadow-lg transform hover:-translate-y-0.5"
+                    style={{width: '180px'}}
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -398,21 +400,22 @@ export default function PostsPage() {
                   <button
                     onClick={() => handleAssignLabel(post)}
                     className="bg-purple-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-purple-700 transition-colors"
+                    style={{width: '180px'}}
                   >
                     Assign Label
                   </button>
                   <select
                     value={post.status}
                     onChange={(e) => handleStatusChange(post.id, e.target.value as any)}
-                    className="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm font-medium focus:ring-2 focus:border-transparent transition-all duration-200 bg-white hover:border-gray-400"
-                    style={{'--tw-ring-color': '#e5080c'} as any}
+                    className="px-3 py-2.5 border border-gray-300 rounded-xl text-sm font-medium focus:ring-2 focus:border-transparent transition-all duration-200 bg-white hover:border-gray-400"
+                    style={{'--tw-ring-color': '#e5080c', width: '160px'} as any}
                   >
                     <option 
                       value="approved" 
                       disabled={!canApprove(post)}
                       style={{color: canApprove(post) ? 'inherit' : '#ccc'}}
                     >
-                      {canApprove(post) ? '✅ Approve' : '🔒 Approve (Complete settings first)'}
+                      {canApprove(post) ? '✅ Approve' : '🔒 Approve'}
                     </option>
                     <option value="pending">⏳ Pending</option>
                     <option value="rejected">❌ Reject</option>
