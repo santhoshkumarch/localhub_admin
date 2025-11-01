@@ -89,7 +89,17 @@ export default function PostsPage() {
     totalLikes: posts.reduce((sum, p) => sum + p.likes, 0),
   };
 
+  const canApprove = (post: Post) => {
+    return post.viewDuration && post.viewLimit && post.assignedLabel;
+  };
+
   const handleStatusChange = async (postId: number, newStatus: 'approved' | 'pending' | 'rejected') => {
+    const post = posts.find(p => p.id === postId);
+    if (newStatus === 'approved' && post && !canApprove(post)) {
+      alert('Please set duration, view limit, and assign a label before approving the post.');
+      return;
+    }
+    
     try {
       await apiService.updatePostStatus(postId, newStatus);
       setPosts(posts.map(post =>
@@ -397,7 +407,13 @@ export default function PostsPage() {
                     className="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm font-medium focus:ring-2 focus:border-transparent transition-all duration-200 bg-white hover:border-gray-400"
                     style={{'--tw-ring-color': '#e5080c'} as any}
                   >
-                    <option value="approved">✅ Approve</option>
+                    <option 
+                      value="approved" 
+                      disabled={!canApprove(post)}
+                      style={{color: canApprove(post) ? 'inherit' : '#ccc'}}
+                    >
+                      {canApprove(post) ? '✅ Approve' : '🔒 Approve (Complete settings first)'}
+                    </option>
                     <option value="pending">⏳ Pending</option>
                     <option value="rejected">❌ Reject</option>
                     <option value="expired">⏰ Expired</option>
@@ -421,11 +437,39 @@ export default function PostsPage() {
                       </span>
                     </div>
                   )}
-                  {post.assignedLabel && (
-                    <div className="text-xs">
-                      <span className="px-2 py-1 text-white rounded-full" style={{backgroundColor: '#e5080c'}}>
-                        {post.assignedLabel}
+                  {/* Settings Status Indicators */}
+                  <div className="space-y-1">
+                    <div className="flex items-center space-x-2 text-xs">
+                      <span className={`w-2 h-2 rounded-full ${post.viewDuration ? 'bg-green-500' : 'bg-red-500'}`}></span>
+                      <span className={post.viewDuration ? 'text-green-600' : 'text-red-600'}>
+                        Duration {post.viewDuration ? `(${post.viewDuration}d)` : '(Not set)'}
                       </span>
+                    </div>
+                    <div className="flex items-center space-x-2 text-xs">
+                      <span className={`w-2 h-2 rounded-full ${post.viewLimit ? 'bg-green-500' : 'bg-red-500'}`}></span>
+                      <span className={post.viewLimit ? 'text-green-600' : 'text-red-600'}>
+                        Limit {post.viewLimit ? `(${post.viewLimit})` : '(Not set)'}
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-2 text-xs">
+                      <span className={`w-2 h-2 rounded-full ${post.assignedLabel ? 'bg-green-500' : 'bg-red-500'}`}></span>
+                      <span className={post.assignedLabel ? 'text-green-600' : 'text-red-600'}>
+                        Label {post.assignedLabel ? `(${post.assignedLabel})` : '(Not set)'}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  {/* Approval Status */}
+                  {post.status === 'pending' && (
+                    <div className="mt-2 p-2 rounded-lg text-xs" style={{backgroundColor: canApprove(post) ? '#f0f9ff' : '#fef2f2'}}>
+                      <div className={`font-medium ${canApprove(post) ? 'text-blue-800' : 'text-red-800'}`}>
+                        {canApprove(post) ? '✓ Ready to approve' : '⚠ Missing settings'}
+                      </div>
+                      {!canApprove(post) && (
+                        <div className="text-red-600 mt-1">
+                          Set all three settings above to enable approval
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
